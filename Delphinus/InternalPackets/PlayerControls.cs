@@ -5,18 +5,21 @@ namespace Delphinus.InternalPackets
     internal class PlayerControlsPacket : IPacket, IPlayerSlot
     {
         public MessageID Type => MessageID.PlayerControls;
+
         public byte PlayerSlot { get; set; }
-        public BitsByte Bit1 { get; set; }
-        public BitsByte Bit2 { get; set; }
-        public BitsByte Bit3 { get; set; }
-        public BitsByte Bit4 { get; set; }
+
+        public BitsByte ControlFlags { get; set; }
+        public BitsByte PulleyFlags { get; set; }
+        public BitsByte MiscFlags { get; set; }
+        public BitsByte SleepFlags { get; set; }
+
         public byte SelectedItem { get; set; }
         public Vector2 Position { get; set; }
-        [Condition("Bit2", 2)]
+        [Condition("{0}.PulleyFlags[2]", Usage.Serialization)]
         public Vector2 Velocity { get; set; }
-        [Condition("Bit3", 6)]
+        [Condition("{0}.MiscFlags[6]", Usage.Serialization)]
         public Vector2 PotionOfReturnOriginalUsePosition { get; set; }
-        [Condition("Bit3", 6)]
+        [Condition("{0}.MiscFlags[6]", Usage.Serialization)]
         public Vector2 PotionOfReturnHomePosition { get; set; }
     }
 }

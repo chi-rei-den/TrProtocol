@@ -14,6 +14,7 @@ namespace Delphinus
 {
     public static class OTAPISerialization
     {
+        // Warning: deserializer shouldn't ended with a colon but serializer should do
         const string _DelphinusGenerationConfig_ = @"
 {
    ""CustomSerializers"" : {
@@ -31,18 +32,18 @@ namespace Delphinus
         ""MessageID"" : ""OTAPISerialization.Serialize(writer, {0});""
     },
     ""CustomDeserializers"" : {
-        ""byte[]"" : ""{0} = OTAPISerialization.SerializeBytes(reader);"",
-        ""ushort[]"" : ""{0} = OTAPISerialization.DeserializeUInt16Array(reader);"",
-        ""short[]"" : ""{0} = OTAPISerialization.DeserializeInt16Array(reader);"",
-        ""Vector2"" : ""{0} = OTAPISerialization.DeserializeVector2(reader);"",
-        ""Color"" : ""{0} = OTAPISerialization.DeserializeColor(reader);"",
-        ""BitsByte"" : ""{0} = OTAPISerialization.DeserializeBitsByte(reader);"",
-        ""MultiToolMode"" : ""{0} = OTAPISerialization.DeserializeMultiToolMode(reader);"",
-        ""NetworkText"" : ""{0} = OTAPISerialization.DeserializeNetworkText(reader);"",
-        ""PlayerDeathReason"" : ""{0} = OTAPISerialization.DeserializePlayerDeathReason(reader);"",
-        ""PlayerSpawnContext"" : ""{0} = OTAPISerialization.DeserializePlayerSpawnContext(reader);"",
-        ""NetModuleType"" : ""{0} = OTAPISerialization.DeserializeNetModuleType(reader);"",
-        ""MessageID"" : ""{0} = OTAPISerialization.DeserializeMessageID(reader);""
+        ""byte[]"" : ""OTAPISerialization.SerializeBytes(reader)"",
+        ""ushort[]"" : ""OTAPISerialization.DeserializeUInt16Array(reader)"",
+        ""short[]"" : ""OTAPISerialization.DeserializeInt16Array(reader)"",
+        ""Vector2"" : ""OTAPISerialization.DeserializeVector2(reader)"",
+        ""Color"" : ""OTAPISerialization.DeserializeColor(reader)"",
+        ""BitsByte"" : ""OTAPISerialization.DeserializeBitsByte(reader)"",
+        ""MultiToolMode"" : ""OTAPISerialization.DeserializeMultiToolMode(reader)"",
+        ""NetworkText"" : ""OTAPISerialization.DeserializeNetworkText(reader)"",
+        ""PlayerDeathReason"" : ""OTAPISerialization.DeserializePlayerDeathReason(reader)"",
+        ""PlayerSpawnContext"" : ""OTAPISerialization.DeserializePlayerSpawnContext(reader)"",
+        ""NetModuleType"" : ""OTAPISerialization.DeserializeNetModuleType(reader)"",
+        ""MessageID"" : ""OTAPISerialization.DeserializeMessageID(reader)""
     },
     ""UsingStatements"" : [
         ""using System.IO;"",

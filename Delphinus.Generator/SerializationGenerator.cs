@@ -108,12 +108,16 @@ namespace Delphinus.Generator
                 return "";
             }
 
-            if (memberDeclaration.AttributeLists.Any(al
-                => al.Attributes.Any(a
-                    => (a.Name as SimpleNameSyntax)?.Identifier.Text == "NoSerialization")))
+            if (memberDeclaration.FindAttribute("NoSerialization") != null)
             {
                 return "";
             }
+
+            var condAttr = memberDeclaration.FindAttribute("Condition");
+            var exprAttr = memberDeclaration.FindAttribute("Expression");
+
+            var condition = GetCodeFromAttribute(condAttr, "Deserialization");
+            var expression = GetCodeFromAttribute(exprAttr, "Deserialization");
 
             if (memberDeclaration is PropertyDeclarationSyntax propDecl)
             {
@@ -127,16 +131,37 @@ namespace Delphinus.Generator
             string gen(string type, string data)
             {
                 string serializer = null;
+
+                var packet = (instanced ? "this" : "packet");
+
+                var result = condition == null
+                    ? ""
+                    : $"if({string.Format(condition, packet)}) {{\n";
+
+                var processedData = expression == null
+                    ? $"{packet}.{data}"
+                    : $"{string.Format(expression, packet)}";
+
                 if (config.CustomSerializers?.TryGetValue(type, out serializer) == true)
                 {
-                    return string.Format(serializer, $"{(instanced ? "this" : "packet")}.{data}");
+                    result += string.Format(serializer, $"{processedData}");
                 }
-                if (_defaultSerializer.TryGetValue(type, out serializer))
+                else if (_defaultSerializer.TryGetValue(type, out serializer))
                 {
-                    return string.Format(serializer, $"{(instanced ? "this" : "packet")}.{data}");
+                    result += string.Format(serializer, $"{processedData}");
                 }
-                //TODO: Custom exception type
-                throw new Exception($"No serializer for type: {type}");
+                else
+                {
+                    //TODO: Custom exception type
+                    throw new Exception($"No serializer for type: {type}");
+                }
+
+                if (condition != null)
+                {
+                    result += "}\n";
+                }
+
+                return result;
             }
             return "";
         }
@@ -208,12 +233,16 @@ namespace Delphinus.Generator
                 return "";
             }
 
-            if (memberDeclaration.AttributeLists.Any(al
-                => al.Attributes.Any(a
-                    => (a.Name as SimpleNameSyntax)?.Identifier.Text == "NoSerialization")))
+            if (memberDeclaration.FindAttribute("NoSerialization") != null)
             {
                 return "";
             }
+
+            var condAttr = memberDeclaration.FindAttribute("Condition");
+            var exprAttr = memberDeclaration.FindAttribute("Expression");
+
+            var condition = GetCodeFromAttribute(condAttr, "Serialization");
+            var expression = GetCodeFromAttribute(exprAttr, "Serialization");
 
             if (memberDeclaration is PropertyDeclarationSyntax propDecl)
             {
@@ -230,16 +259,38 @@ namespace Delphinus.Generator
             string gen(string type, string data)
             {
                 string deserializer = null;
+
+                var packet = (instanced ? "this" : "packet");
+
+                var result = condition == null
+                    ? ""
+                    : $"if({string.Format(condition, packet)}) {{\n";
+
+                string deserialized = null;
                 if (config.CustomDeserializers?.TryGetValue(type, out deserializer) == true)
                 {
-                    return string.Format(deserializer, $"{(instanced ? "this" : "packet")}.{data}");
+                    deserialized = string.Format(deserializer, $"{packet}");
                 }
-                if (_defaultDserializer.TryGetValue(type, out deserializer))
+                else if (_defaultDserializer.TryGetValue(type, out deserializer))
                 {
-                    return string.Format(deserializer, $"{(instanced ? "this" : "packet")}.{data}");
+                    deserialized = string.Format(deserializer, $"{packet}");
                 }
-                //TODO: Custom exception type
-                throw new Exception($"No deserializer for type: {type}");
+                else
+                {
+                    //TODO: Custom exception type
+                    throw new Exception($"No deserializer for type: {type}");
+                }
+
+                result += expression == null
+                    ? $"{packet}.{data} = {deserialized};"
+                    : $"{packet}.{data} = {string.Format(expression, deserialized)};";
+
+                if (condition != null)
+                {
+                    result += "}\n";
+                }
+
+                return result;
             }
             return "";
         }
@@ -253,6 +304,24 @@ namespace Delphinus.Generator
 
         private bool IsStaticOrConstant(SyntaxTokenList modifiers)
             => modifiers.Any(m => m.Text == "static" || m.Text == "const");
+
+        private static string GetCodeFromAttribute(AttributeSyntax condAttr, string anotherSide)
+        {
+            if (condAttr != null)
+            {
+                var args = condAttr?.ArgumentList;
+                if (args != null && args.Arguments.Count > 1 && args.Arguments[1].ToString() == $"Usage.{anotherSide}")
+                {
+                    return null;
+                }
+                else if (args != null && args.Arguments.Count > 0)
+                {
+                    return (args.Arguments.First().Expression as LiteralExpressionSyntax)?.Token.ValueText;
+                }
+            }
+
+            return null;
+        }
 
         private static Dictionary<string, string> InitDefaultSerializers()
         {
@@ -271,38 +340,40 @@ namespace Delphinus.Generator
             return defaultSerializers;
         }
 
+        // Warning: serializer should ended with a colon
         private static readonly Dictionary<string, string> _defaultSerializer = InitDefaultSerializers();
 
+        // Warning: deserializer shouldn't ended with a colon
         private static readonly Dictionary<string, string> _defaultDserializer = new Dictionary<string, string>()
         {
-            {"int", $"{{0}} = reader.{nameof(BinaryReader.ReadInt32)}();"},
-            {"Int32", $"{{0}} = reader.{nameof(BinaryReader.ReadInt32)}();"},
-            {"uint", $"{{0}} = reader.{nameof(BinaryReader.ReadUInt32)}();"},
-            {"UInt32", $"{{0}} = reader.{nameof(BinaryReader.ReadUInt32)}();"},
-            {"long", $"{{0}} = reader.{nameof(BinaryReader.ReadInt64)}();"},
-            {"Int64", $"{{0}} = reader.{nameof(BinaryReader.ReadInt64)}();"},
-            {"ulong", $"{{0}} = reader.{nameof(BinaryReader.ReadUInt64)}();"},
-            {"UInt64", $"{{0}} = reader.{nameof(BinaryReader.ReadUInt64)}();"},
-            {"short", $"{{0}} = reader.{nameof(BinaryReader.ReadInt16)}();"},
-            {"Int16", $"{{0}} = reader.{nameof(BinaryReader.ReadInt16)}();"},
-            {"ushort", $"{{0}} = reader.{nameof(BinaryReader.ReadUInt16)}();"},
-            {"UInt16", $"{{0}} = reader.{nameof(BinaryReader.ReadUInt16)}();"},
-            {"byte", $"{{0}} = reader.{nameof(BinaryReader.ReadByte)}();"},
-            {"Byte", $"{{0}} = reader.{nameof(BinaryReader.ReadByte)}();"},
-            {"sbyte", $"{{0}} = reader.{nameof(BinaryReader.ReadSByte)}();"},
-            {"SByte", $"{{0}} = reader.{nameof(BinaryReader.ReadSByte)}();"},
-            {"float", $"{{0}} = reader.{nameof(BinaryReader.ReadSingle)}();"},
-            {"Single", $"{{0}} = reader.{nameof(BinaryReader.ReadSingle)}();"},
-            {"double", $"{{0}} = reader.{nameof(BinaryReader.ReadDouble)}();"},
-            {"Double", $"{{0}} = reader.{nameof(BinaryReader.ReadDouble)}();"},
-            {"decimal", $"{{0}} = reader.{nameof(BinaryReader.ReadDecimal)}();"},
-            {"Decimal", $"{{0}} = reader.{nameof(BinaryReader.ReadDecimal)}();"},
-            {"string", $"{{0}} = reader.{nameof(BinaryReader.ReadString)}();"},
-            {"String", $"{{0}} = reader.{nameof(BinaryReader.ReadString)}();"},
-            {"bool", $"{{0}} = reader.{nameof(BinaryReader.ReadBoolean)}();"},
-            {"Boolean", $"{{0}} = reader.{nameof(BinaryReader.ReadBoolean)}();"},
-            {"char", $"{{0}} = reader.{nameof(BinaryReader.ReadChar)}();"},
-            {"Char", $"{{0}} = reader.{nameof(BinaryReader.ReadChar)}();"},
+            {"int", $"reader.{nameof(BinaryReader.ReadInt32)}()"},
+            {"Int32", $"reader.{nameof(BinaryReader.ReadInt32)}()"},
+            {"uint", $"reader.{nameof(BinaryReader.ReadUInt32)}()"},
+            {"UInt32", $"reader.{nameof(BinaryReader.ReadUInt32)}()"},
+            {"long", $"reader.{nameof(BinaryReader.ReadInt64)}()"},
+            {"Int64", $"reader.{nameof(BinaryReader.ReadInt64)}()"},
+            {"ulong", $"reader.{nameof(BinaryReader.ReadUInt64)}()"},
+            {"UInt64", $"reader.{nameof(BinaryReader.ReadUInt64)}()"},
+            {"short", $"reader.{nameof(BinaryReader.ReadInt16)}()"},
+            {"Int16", $"reader.{nameof(BinaryReader.ReadInt16)}()"},
+            {"ushort", $"reader.{nameof(BinaryReader.ReadUInt16)}()"},
+            {"UInt16", $"reader.{nameof(BinaryReader.ReadUInt16)}()"},
+            {"byte", $"reader.{nameof(BinaryReader.ReadByte)}()"},
+            {"Byte", $"reader.{nameof(BinaryReader.ReadByte)}()"},
+            {"sbyte", $"reader.{nameof(BinaryReader.ReadSByte)}()"},
+            {"SByte", $"reader.{nameof(BinaryReader.ReadSByte)}()"},
+            {"float", $"reader.{nameof(BinaryReader.ReadSingle)}()"},
+            {"Single", $"reader.{nameof(BinaryReader.ReadSingle)}()"},
+            {"double", $"reader.{nameof(BinaryReader.ReadDouble)}()"},
+            {"Double", $"reader.{nameof(BinaryReader.ReadDouble)}()"},
+            {"decimal", $"reader.{nameof(BinaryReader.ReadDecimal)}()"},
+            {"Decimal", $"reader.{nameof(BinaryReader.ReadDecimal)}()"},
+            {"string", $"reader.{nameof(BinaryReader.ReadString)}()"},
+            {"String", $"reader.{nameof(BinaryReader.ReadString)}()"},
+            {"bool", $"reader.{nameof(BinaryReader.ReadBoolean)}()"},
+            {"Boolean", $"reader.{nameof(BinaryReader.ReadBoolean)}()"},
+            {"char", $"reader.{nameof(BinaryReader.ReadChar)}()"},
+            {"Char", $"reader.{nameof(BinaryReader.ReadChar)}()"},
         };
     }
 }
