@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+    <AssemblyName>Delphinus</AssemblyName>
+    <RootNamespace>Delphinus</RootNamespace>
+    <Configurations>Debug;Release;OTAPI</Configurations>
+    <Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
+  
+  <Choose>
+    <When Condition=" '$(Configuration)'=='Debug' ">
+      <PropertyGroup>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>.\bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '$(Configuration)'=='OTAPI' ">
+      <PropertyGroup>
+        <DebugSymbols>false</DebugSymbols>
+        <Optimize>true</Optimize>
+        <OutputPath>.\bin\OTAPI\</OutputPath>
+        <DefineConstants>OTAPI;TRACE</DefineConstants>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Delphinus.Generator\Delphinus.Generator.csproj" OutputItemType="Analyzer" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OTAPI.Upcoming" Version="3.0.20-alpha" Condition=" '$(Configuration)'=='OTAPI' " />
+  </ItemGroup>
+
+</Project>
