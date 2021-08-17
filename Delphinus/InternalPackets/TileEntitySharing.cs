@@ -5,7 +5,7 @@
         public MessageID Type => MessageID.TileEntitySharing;
         public int ID { get; set; }
         public bool IsNew { get; set; }
-        [Condition("{0}.IsNew")]
+        [Condition("{{packet}}.IsNew")]
         public byte[] TileEntityData { get; set; }
     }
 }

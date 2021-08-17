@@ -28,8 +28,8 @@ namespace Delphinus
 
     public enum Usage
     {
-        Serialization,
-        Deserialization,
+        Serialize,
+        Deserialize,
         Both,
     }
 
@@ -65,5 +65,16 @@ namespace Delphinus
     public sealed class ManualAttribute : Attribute
     {
 
+    }
+
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+    public sealed class Arguments : Attribute
+    {
+        public string[] Args { get; set; }
+
+        public Arguments(params string[] args)
+        {
+            Args = args;
+        }
     }
 }

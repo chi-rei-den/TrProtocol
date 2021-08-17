@@ -16,6 +16,6 @@ namespace Delphinus.InternalPackets
 
         public byte Style { get; set; }
 
-        [Condition("{0}.Flags[3]")] public int ExtraInfo { get; set; }
+        [Condition("{{packet}}.Flags[3]")] public int ExtraInfo { get; set; }
     }
 }

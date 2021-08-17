@@ -153,7 +153,7 @@ namespace Delphinus.InternalModels
                     case Mode.LocalizationKey:
                         {
                             string text2 = _text;
-                            return $"lang[{text2}][{string.Join<NetworkText>(',', _substitutions)}]";
+                            return $"lang[{text2}][{string.Join<NetworkText>(",", _substitutions)}]";
                         }
                     default:
                         return _text;

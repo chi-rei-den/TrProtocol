@@ -2,6 +2,9 @@ using System;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Scriban;
+using Scriban.Runtime;
+using Scriban.Syntax;
 using Xunit;
 
 namespace Delphinus.Generator.Tests
@@ -9,34 +12,29 @@ namespace Delphinus.Generator.Tests
     public class ExperimentalTests
     {
         [Fact]
-        public void Test()
+        public void TestScriban()
         {
-            const string config = @"
-{
-    ""UsingStatements"" : [
-        ""using System.IO;"",
-        ""using Microsoft.Xna.Framework;""
-    ]
-}
-";
-            // Create the 'input' compilation that the generator will act on
-            Compilation inputCompilation = CreateCompilation(@"
-namespace Delphinus.Packets
-{
-    internal class AnglerQuestPacket : IPacket
-    {
-        public const string _DelphinusGenerationConfig_ = @""{config}"";
-        public byte QuestType { get; set; }
-        public bool Finished;
-    }
-}
-".Replace("{config}", config.Replace("\"", "\"\"")));
+            var context = new TemplateContext();
 
-            var generator = new SerializationGenerator();
-            GeneratorDriver driver = CSharpGeneratorDriver.Create(generator);
-            driver = driver.RunGeneratorsAndUpdateCompilation(inputCompilation, out var outputCompilation, out var diagnostics);
-            var runResult = driver.GetRunResult();
-            Assert.Empty(runResult.Diagnostics);
+
+            var templateOuter = Template.Parse(@"
+outer {{name}} {
+    {{ inner }}
+}
+");
+            var templateInner =  Template.Parse(@"inner = {{name}}");
+
+
+            TemplateContext ctx = new TemplateContext();
+            ctx.SetValue(ScriptVariable.Create("name", ScriptVariableScope.Global), "Hello");
+
+            var inner = templateInner.Render(ctx);
+
+            ctx.SetValue(ScriptVariable.Create("inner", ScriptVariableScope.Global), inner);
+
+            var result = templateOuter.Render(ctx);
+
+            Assert.False(false);
         }
 
         private static Compilation CreateCompilation(string source)

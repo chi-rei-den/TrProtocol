@@ -5,12 +5,21 @@ using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Scriban;
 
 namespace Delphinus.Generator
 {
     [Generator]
     public class SerializationGenerator : ISourceGenerator
     {
+        private Template _packetTypeTemplate;
+        private Template _serializationClassTemplate;
+        private Template _serializationMethodTemplate;
+        private Template _serializeStatementTemplate;
+        private Template _deserializeStatementTemplate;
+
+        private List<GenerationConfig> _configs;
+
         public void Initialize(GeneratorInitializationContext context)
         {
             context.RegisterForSyntaxNotifications(() => new SerializationContextReceiver());
@@ -20,284 +29,217 @@ namespace Delphinus.Generator
         {
             var receiver = (SerializationContextReceiver) context.SyntaxContextReceiver;
             if (receiver == null) throw new ArgumentNullException(nameof(receiver));
-            if (receiver.Config == null)
+
+            _packetTypeTemplate = Utils.LoadTemplate(context, "packet-type");
+            _serializationClassTemplate = Utils.LoadTemplate(context, "serialization-class");
+            _serializationMethodTemplate = Utils.LoadTemplate(context, "serialization-method");
+            _serializeStatementTemplate = Utils.LoadTemplate(context, "serialize-statement");
+            _deserializeStatementTemplate = Utils.LoadTemplate(context, "deserialize-statement");
+
+            LoadConfigs(context);
+            foreach (var config in _configs)
             {
-                throw new Exception("Config not found");
-            }
-
-            GenerateNewPacketTypes(context, receiver);
-            GenerateStaticSerializeMethods(context, receiver);
-            GenerateStaticDeserializeMethods(context, receiver);
-        }
-
-        private void GenerateNewPacketTypes(GeneratorExecutionContext context, SerializationContextReceiver receiver)
-        {
-            foreach (var packetType in receiver.PacketTypes)
-            {
-                var sb = new StringBuilder();
-
-                foreach (var stmt in receiver.Config.UsingStatements)
-                {
-                    sb.AppendLine(stmt);
-                }
-                var packetName = packetType.Identifier.Text;
-                sb.AppendLine($"namespace Delphinus.Packets {{");
-                sb.AppendLine($"public {receiver.Config.TypeKind} {packetName} {{");
-
-                foreach (var memberDecl in packetType.Members)
-                {
-                    sb.AppendLine(memberDecl.ToString());
-                }
-
-                sb.Append(GenerateSerializeMethod(packetType, receiver.Config, true));
-                sb.Append(GenerateDeserializeMethod(packetType, receiver.Config, true));
-
-                sb.AppendLine("}}");
-
-                context.AddSource($"{packetName}", sb.ToString());
+                GenerateNewPacketTypes(context, receiver, config);
+                GenerateSerializationClass(context, receiver, config);
             }
         }
 
-
-        #region Serialize
-
-        private void GenerateStaticSerializeMethods(GeneratorExecutionContext context, SerializationContextReceiver receiver)
+        private void LoadConfigs(GeneratorExecutionContext context)
         {
-            var sb = new StringBuilder();
+            var yamlDeserializer = new YamlDotNet.Serialization.Deserializer();
+            _configs = context.AdditionalFiles
+                .Where(f => f.Path.EndsWith("delphinus.yml", StringComparison.InvariantCultureIgnoreCase))
+                .Distinct()
+                .Select(f => yamlDeserializer.Deserialize<GenerationConfig>(
+                    f.GetText(context.CancellationToken)?.ToString()))
+                .ToList();
+        }
 
-            foreach (var stmt in receiver.Config.UsingStatements)
-            {
-                sb.AppendLine(stmt);
-            }
-            sb.AppendLine($"namespace Delphinus {{");
-            sb.AppendLine("public static partial class Serialization {");
+        private void GenerateNewPacketTypes(
+            GeneratorExecutionContext context,
+            SerializationContextReceiver receiver,
+            GenerationConfig config)
+        {
+            var templateCtx = new TemplateContext();
+
+            templateCtx.SetVar("using_statements", config.UsingStatements);
+            templateCtx.SetVar("namespace", config.Namespace);
+            templateCtx.SetVar("type_kind", config.TypeKind);
+            templateCtx.SetVar("base_type", config.BaseType);
+            templateCtx.SetVar("reader_type", config.Reader);
+            templateCtx.SetVar("writer_type", config.Writer);
+            templateCtx.SetVar("packet", "this");
 
             foreach (var packetType in receiver.PacketTypes)
             {
-                sb.Append(GenerateSerializeMethod(packetType, receiver.Config, false));
+                templateCtx.SetVar("packet_type_name", packetType.Identifier.Text);
+                templateCtx.SetVar("members", packetType.Members);
+
+                var serializeStatements = new List<string>();
+                var deserializeStatements = new List<string>();
+                foreach (var member in packetType.Members)
+                {
+                    serializeStatements.Add(RenderSerializeStatement(member, templateCtx, config));
+                    deserializeStatements.Add(RenderDeserializeStatement(member, templateCtx, config));
+                }
+
+                templateCtx.SetVar("serialize_statements", serializeStatements);
+                templateCtx.SetVar("deserialize_statements", deserializeStatements);
+
+                var result = _packetTypeTemplate.Render(templateCtx);
+
+                context.AddSource($"{packetType.Identifier.Text}", result);
             }
-
-            sb.AppendLine("}}");
-
-            context.AddSource("Serialize.cs", sb.ToString());
         }
 
-        private string GenerateSerializeMethod(TypeDeclarationSyntax typeDecl, GenerationConfig config, bool instanced)
+        private void GenerateSerializationClass(
+            GeneratorExecutionContext context,
+            SerializationContextReceiver receiver,
+            GenerationConfig config)
         {
-            var sb = new StringBuilder();
-            if (instanced)
+            var templateCtx = new TemplateContext();
+
+            templateCtx.SetVar("using_statements", config.UsingStatements);
+            templateCtx.SetVar("namespace", config.Namespace);
+            templateCtx.SetVar("type_kind", config.TypeKind);
+            templateCtx.SetVar("base_type", config.BaseType);
+            templateCtx.SetVar("reader_type", config.Reader);
+            templateCtx.SetVar("writer_type", config.Writer);
+            templateCtx.SetVar("packet", "packet");
+
+            var methodTuples = new List<string>();
+            foreach (var packetType in receiver.PacketTypes)
             {
-                sb.AppendLine($"public void Serialize({config.Writer} writer) {{");
+                templateCtx.SetVar("packet_type_name", packetType.Identifier.Text);
+                templateCtx.SetVar("members", packetType.Members);
+
+                var serializeStatements = new List<string>();
+                var deserializeStatements = new List<string>();
+
+                foreach (var member in packetType.Members)
+                {
+                    serializeStatements.Add(RenderSerializeStatement(member, templateCtx, config));
+                    deserializeStatements.Add(RenderDeserializeStatement(member, templateCtx, config));
+                }
+
+                templateCtx.SetVar("serialize_statements", serializeStatements);
+                templateCtx.SetVar("deserialize_statements", deserializeStatements);
+
+                methodTuples.Add(_serializationMethodTemplate.Render(templateCtx));
             }
-            else
-            {
-                sb.AppendLine($"public static void Serialize(this {("Delphinus.Packets")}.{typeDecl.Identifier.Text} packet, {config.Writer} writer) {{");
-            }
-            foreach (var memberDeclaration in typeDecl.Members)
-            {
-                sb.AppendLine(GenerateSerializeStatement(memberDeclaration, config, instanced));
-            }
-            sb.Append("}");
-            return sb.ToString();
+
+            templateCtx.SetVar("method_tuples", methodTuples);
+
+            var result = _serializationClassTemplate.Render(templateCtx);
+
+            context.AddSource($"Serialization", result);
         }
 
-        private string GenerateSerializeStatement(MemberDeclarationSyntax memberDeclaration, GenerationConfig config, bool instanced)
+        private string RenderSerializeStatement(
+            MemberDeclarationSyntax memberDecl,
+            TemplateContext context,
+            GenerationConfig config)
         {
-            if (!IsPublicOrInternal(memberDeclaration.Modifiers) || IsStaticOrConstant(memberDeclaration.Modifiers))
-            {
+            if (!IsPublicOrInternal(memberDecl.Modifiers) || IsStaticOrConstant(memberDecl.Modifiers))
                 return "";
-            }
 
-            if (memberDeclaration.FindAttribute("NoSerialization") != null)
-            {
+            if (memberDecl.FindAttribute("NoSerialization") != null)
                 return "";
-            }
 
-            var condAttr = memberDeclaration.FindAttribute("Condition");
-            var exprAttr = memberDeclaration.FindAttribute("Expression");
+            var condAttr = memberDecl.FindAttribute("Condition");
+            var exprAttr = memberDecl.FindAttribute("Expression");
 
-            var condition = GetCodeFromAttribute(condAttr, "Deserialization");
-            var expression = GetCodeFromAttribute(exprAttr, "Deserialization");
+            var condition = GetCodeFromAttribute(condAttr, "Deserialize");
+            if (condition != null) condition = Template.Parse(condition).Render(context);
 
-            if (memberDeclaration is PropertyDeclarationSyntax propDecl)
+            var expression = GetCodeFromAttribute(exprAttr, "Deserialize");
+            if (expression != null) expression = Template.Parse(expression).Render(context);
+
+            context.SetVar("condition", condition);
+            context.SetVar("expression", expression);
+
+            if (memberDecl is PropertyDeclarationSyntax propDecl)
             {
-                return gen(propDecl.Type.ToString(), propDecl.Identifier.Text);
+                context.SetVar("member_name", propDecl.Identifier.Text);
+                context.SetVar("serializer", getSerializer(propDecl.Type.ToString()));
             }
-            else if (memberDeclaration is FieldDeclarationSyntax fieldDecl)
+            else if (memberDecl is FieldDeclarationSyntax fieldDecl)
             {
-                return gen(fieldDecl.Declaration.Type.ToString(), Utils.GetName(fieldDecl));
+                context.SetVar("member_name", Utils.GetName(fieldDecl));
+                context.SetVar("serializer", getSerializer(fieldDecl.Declaration.Type.ToString()));
             }
 
-            string gen(string type, string data)
+            string getSerializer(string typeName)
             {
                 string serializer = null;
-
-                var packet = (instanced ? "this" : "packet");
-
-                var result = condition == null
-                    ? ""
-                    : $"if({string.Format(condition, packet)}) {{\n";
-
-                var processedData = expression == null
-                    ? $"{packet}.{data}"
-                    : $"{string.Format(expression, packet)}";
-
-                if (config.CustomSerializers?.TryGetValue(type, out serializer) == true)
-                {
-                    result += string.Format(serializer, $"{processedData}");
-                }
-                else if (_defaultSerializer.TryGetValue(type, out serializer))
-                {
-                    result += string.Format(serializer, $"{processedData}");
-                }
+                if (config.CustomSerializers?.TryGetValue(typeName, out serializer) == true)
+                    return Template.Parse(serializer).Render(context);
+                else if (_defaultSerializer.TryGetValue(typeName, out serializer))
+                    return Template.Parse(serializer).Render(context);
                 else
-                {
-                    //TODO: Custom exception type
-                    throw new Exception($"No serializer for type: {type}");
-                }
-
-                if (condition != null)
-                {
-                    result += "}\n";
-                }
-
-                return result;
+                    throw new Exception($"No serializer for type: {typeName}"); //TODO: Custom exception type
             }
-            return "";
+
+            return _serializeStatementTemplate.Render(context);
         }
 
-        #endregion
-
-
-        #region Deserialize
-
-        private void GenerateStaticDeserializeMethods(GeneratorExecutionContext context, SerializationContextReceiver receiver)
+        private string RenderDeserializeStatement(
+            MemberDeclarationSyntax memberDecl,
+            TemplateContext context,
+            GenerationConfig config)
         {
-            var sb = new StringBuilder();
-
-            foreach (var stmt in receiver.Config.UsingStatements)
-            {
-                sb.AppendLine(stmt);
-            }
-            sb.AppendLine($"namespace Delphinus {{");
-            sb.AppendLine("public static partial class Serialization {");
-
-            foreach (var packetType in receiver.PacketTypes)
-            {
-                sb.Append(GenerateDeserializeMethod(packetType, receiver.Config, false));
-            }
-
-            sb.AppendLine("}}");
-
-            context.AddSource("Deserialize.cs", sb.ToString());
-        }
-
-        private string GenerateDeserializeMethod(TypeDeclarationSyntax typeDecl, GenerationConfig config, bool instanced)
-        {
-            var sb = new StringBuilder();
-            var fullname = "Delphinus.Packets." + typeDecl.Identifier.Text;
-            if (instanced)
-            {
-                sb.AppendLine($"public void Deserialize({config.Reader} reader) {{");
-            }
-            else
-            {
-                //FIXME: This works on reference type only
-                sb.AppendLine($"public static {fullname} Deserialize<T>(this {config.Reader} reader, {fullname} packet = null) where T : {fullname} {{");
-                sb.AppendLine($"packet = new {fullname}();");
-            }
-            foreach (var memberDeclaration in typeDecl.Members)
-            {
-                sb.AppendLine(GenerateDeserializeStatement(memberDeclaration, config, instanced));
-            }
-
-            if (!instanced)
-            {
-                sb.AppendLine($"return packet;");
-            }
-
-            sb.AppendLine("}");
-
-            return sb.ToString();
-        }
-
-        private string GenerateDeserializeStatement(MemberDeclarationSyntax memberDeclaration, GenerationConfig config, bool instanced)
-        {
-            if (!IsPublicOrInternal(memberDeclaration.Modifiers) || IsStaticOrConstant(memberDeclaration.Modifiers))
-            {
+            if (!IsPublicOrInternal(memberDecl.Modifiers) || IsStaticOrConstant(memberDecl.Modifiers))
                 return "";
-            }
 
-            if (memberDeclaration.Modifiers.Any(m => m.Text == "readonly"))
-            {
+            if (memberDecl.Modifiers.Any(m => m.Text == "readonly"))
                 return "";
-            }
 
-            if (memberDeclaration.FindAttribute("NoSerialization") != null)
-            {
+            if (memberDecl.FindAttribute("NoSerialization") != null)
                 return "";
-            }
 
-            var condAttr = memberDeclaration.FindAttribute("Condition");
-            var exprAttr = memberDeclaration.FindAttribute("Expression");
+            var condAttr = memberDecl.FindAttribute("Condition");
+            var exprAttr = memberDecl.FindAttribute("Expression");
 
-            var condition = GetCodeFromAttribute(condAttr, "Serialization");
-            var expression = GetCodeFromAttribute(exprAttr, "Serialization");
+            var condition = GetCodeFromAttribute(condAttr, "Serialize");
+            if (condition != null) condition = Template.Parse(condition).Render(context);
 
-            if (memberDeclaration is PropertyDeclarationSyntax propDecl)
+            var expression = GetCodeFromAttribute(exprAttr, "Serialize");
+            if (expression != null) expression = Template.Parse(expression).Render(context);
+
+            context.SetVar("condition", condition);
+            context.SetVar("expression", expression);
+
+            if (memberDecl is PropertyDeclarationSyntax propDecl)
             {
                 if (propDecl.AccessorList?.Accessors.Any(a => a.Keyword.Text == "set") == true)
                 {
-                    return gen(propDecl.Type.ToString(), propDecl.Identifier.Text);
-                }
-            }
-            else if (memberDeclaration is FieldDeclarationSyntax fieldDecl)
-            {
-                return gen(fieldDecl.Declaration.Type.ToString(), Utils.GetName(fieldDecl));
-            }
-
-            string gen(string type, string data)
-            {
-                string deserializer = null;
-
-                var packet = (instanced ? "this" : "packet");
-
-                var result = condition == null
-                    ? ""
-                    : $"if({string.Format(condition, packet)}) {{\n";
-
-                string deserialized = null;
-                if (config.CustomDeserializers?.TryGetValue(type, out deserializer) == true)
-                {
-                    deserialized = string.Format(deserializer, $"{packet}");
-                }
-                else if (_defaultDserializer.TryGetValue(type, out deserializer))
-                {
-                    deserialized = string.Format(deserializer, $"{packet}");
+                    context.SetVar("member_name", propDecl.Identifier.Text);
+                    context.SetVar("deserializer", getDeserializer(propDecl.Type.ToString()));
                 }
                 else
                 {
-                    //TODO: Custom exception type
-                    throw new Exception($"No deserializer for type: {type}");
+                    return "";
                 }
-
-                result += expression == null
-                    ? $"{packet}.{data} = {deserialized};"
-                    : $"{packet}.{data} = {string.Format(expression, deserialized)};";
-
-                if (condition != null)
-                {
-                    result += "}\n";
-                }
-
-                return result;
             }
-            return "";
+            else if (memberDecl is FieldDeclarationSyntax fieldDecl)
+            {
+                context.SetVar("member_name", Utils.GetName(fieldDecl));
+                context.SetVar("deserializer", getDeserializer(fieldDecl.Declaration.Type.ToString()));
+            }
+
+            string getDeserializer(string typeName)
+            {
+                string deserializer = null;
+                if (config.CustomDeserializers?.TryGetValue(typeName, out deserializer) == true)
+                    return Template.Parse(deserializer).Render(context);
+                else if (_defaultDserializer.TryGetValue(typeName, out deserializer))
+                    return Template.Parse(deserializer).Render(context);
+                else
+                    throw new Exception($"No deserializer for type: {typeName}");//TODO: Custom exception type
+            }
+
+            return _deserializeStatementTemplate.Render(context);
         }
-
-
-        #endregion
-
 
         private bool IsPublicOrInternal(SyntaxTokenList modifiers)
             => modifiers.Any(m => m.Text == "public" || m.Text == "internal");
@@ -335,15 +277,13 @@ namespace Delphinus.Generator
             };
             foreach (var type in primitiveTypes)
             {
-                defaultSerializers.Add(type, "writer.Write({0});");
+                defaultSerializers.Add(type, "writer.Write(value)");
             }
             return defaultSerializers;
         }
 
-        // Warning: serializer should ended with a colon
         private static readonly Dictionary<string, string> _defaultSerializer = InitDefaultSerializers();
 
-        // Warning: deserializer shouldn't ended with a colon
         private static readonly Dictionary<string, string> _defaultDserializer = new Dictionary<string, string>()
         {
             {"int", $"reader.{nameof(BinaryReader.ReadInt32)}()"},

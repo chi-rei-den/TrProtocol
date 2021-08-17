@@ -1,0 +1,23 @@
+﻿{{~ for $u in using_statements ~}}
+{{ $u }}
+{{~ end ~}}
+
+namespace {{ namespace }}.Packets {
+    public {{ type_kind }} {{ packet_type_name }} {{- base_type ?! ' : ' + base_type }} {
+    {{~ for $member in members ~}}
+        {{ $member | string.replace '\n' '\n    ' }}
+    {{~ end ~}}
+
+        public void Deserialize({{ reader_type }} reader) {
+        {{~ for $stmt in deserialize_statements ~}}
+            {{ $stmt | string.replace '\n' '\n            ' }}
+        {{~ end ~}}
+        }
+
+        public void Serialize({{ writer_type }} writer) {
+        {{~ for $stmt in serialize_statements ~}}
+            {{ $stmt | string.replace '\n' '\n            ' }}
+        {{~ end ~}}
+        }
+    }
+}

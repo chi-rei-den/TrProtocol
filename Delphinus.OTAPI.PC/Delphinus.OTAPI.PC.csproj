@@ -1,0 +1,425 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Include="..\Delphinus\Attributes.cs">
+        <Link>Attributes.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\AchievementMessageEventHappenedPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\AchievementMessageEventHappenedPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\AchievementMessageNPCKilledPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\AchievementMessageNPCKilledPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\AddNPCBuffPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\AddNPCBuffPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\AddPlayerBuffPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\AddPlayerBuffPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\AnglerQuestCountSyncPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\AnglerQuestCountSyncPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\AnglerQuestFinishedPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\AnglerQuestFinishedPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\AnglerQuestPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\AnglerQuestPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\Assorted1Packet.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\Assorted1Packet.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\BugCatchingPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\BugCatchingPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\BugReleasingPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\BugReleasingPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ChangeDoorPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ChangeDoorPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ChestNamePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ChestNamePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ChestUpdatesPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ChestUpdatesPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ClientHelloPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ClientHelloPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ClientSyncedInventoryPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ClientSyncedInventoryPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ClientUUIDPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ClientUUIDPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\CombatTextIntPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\CombatTextIntPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\CombatTextStringPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\CombatTextStringPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\CountPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\CountPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\CrystalInvasionSendWaitTimePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\CrystalInvasionSendWaitTimePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\CrystalInvasionStartPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\CrystalInvasionStartPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\CrystalInvasionWipeAllTheThingsssPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\CrystalInvasionWipeAllTheThingsssPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\DeadPlayerPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\DeadPlayerPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\DodgePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\DodgePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\EmojiPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\EmojiPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\FinishedConnectingToServerPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\FinishedConnectingToServerPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\FishOutNPCPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\FishOutNPCPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\FoodPlatterTryPlacingPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\FoodPlatterTryPlacingPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\FrameSectionPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\FrameSectionPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\GemLockTogglePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\GemLockTogglePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\HealEffectPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\HealEffectPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\HitSwitchPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\HitSwitchPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\InstancedItemPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\InstancedItemPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\InvasionProgressReportPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\InvasionProgressReportPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ItemAnimationPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ItemAnimationPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ItemFrameTryPlacingPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ItemFrameTryPlacingPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ItemOwnerPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ItemOwnerPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ItemTweakerPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ItemTweakerPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\KickPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\KickPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\KillProjectilePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\KillProjectilePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\LandGolfBallInCupPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\LandGolfBallInCupPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\LoadPlayerPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\LoadPlayerPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ManaEffectPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ManaEffectPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\MassWireOperationPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\MassWireOperationPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\MassWireOperationPayPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\MassWireOperationPayPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\MenuSunMoonPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\MenuSunMoonPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\MinionAttackTargetUpdatePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\MinionAttackTargetUpdatePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\MinionRestTargetUpdatePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\MinionRestTargetUpdatePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\MoonlordCountdownPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\MoonlordCountdownPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\MurderSomeoneElsesProjectilePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\MurderSomeoneElsesProjectilePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\NebulaLevelupRequestPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\NebulaLevelupRequestPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\NPCHomePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\NPCHomePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\NPCKillCountDeathTallyPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\NPCKillCountDeathTallyPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PaintTilePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PaintTilePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PaintWallPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PaintWallPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlaceObjectPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlaceObjectPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerActivePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerActivePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerBuffsPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerBuffsPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerControlsPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerControlsPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerDeathV2Packet.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerDeathV2Packet.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerHealthPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerHealthPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerHurtV2Packet.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerHurtV2Packet.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerManaPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerManaPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerPvPPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerPvPPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerStealthPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerStealthPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerTalkingNPCPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerTalkingNPCPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerTeamPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerTeamPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayerZonePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayerZonePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayLegacySoundPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayLegacySoundPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PlayNotePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PlayNotePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\PoofOfSmokePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\PoofOfSmokePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\QuickStackChestsPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\QuickStackChestsPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ReadSignPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ReadSignPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\RemoveRevengeMarkerPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\RemoveRevengeMarkerPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\RequestChestOpenPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\RequestChestOpenPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\RequestNPCBuffRemovalPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\RequestNPCBuffRemovalPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\RequestPasswordPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\RequestPasswordPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\RequestReadSignPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\RequestReadSignPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\RequestTileDataPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\RequestTileDataPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\RequestTileEntityInteractionPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\RequestTileEntityInteractionPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\RequestWorldInfoPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\RequestWorldInfoPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ResetItemOwnerPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ResetItemOwnerPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SendNPCBuffsPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SendNPCBuffsPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SendPasswordPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SendPasswordPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\Serialization.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\Serialization.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SetCountsAsHostForGameplayPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SetCountsAsHostForGameplayPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SetMiscEventValuesPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SetMiscEventValuesPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\ShopOverridePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\ShopOverridePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SmartTextMessagePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SmartTextMessagePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SocialHandshakePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SocialHandshakePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SpawnBossPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SpawnBossPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SpawnPlayerPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SpawnPlayerPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SpecialFXPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SpecialFXPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SpiritHealPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SpiritHealPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\StartPlayingPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\StartPlayingPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\StatusTextPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\StatusTextPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\StrikeNPCPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\StrikeNPCPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncCavernMonsterTypePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncCavernMonsterTypePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncChestItemPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncChestItemPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncEmoteBubblePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncEmoteBubblePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncEquipmentPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncEquipmentPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncExtraValuePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncExtraValuePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncItemPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncItemPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncNPCNamePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncNPCNamePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncNPCPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncNPCPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncPlayerChestIndexPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncPlayerChestIndexPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncPlayerChestPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncPlayerChestPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncPlayerPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncPlayerPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncProjectilePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncProjectilePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncRevengeMarkerPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncRevengeMarkerPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\SyncTilePickingPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\SyncTilePickingPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TamperWithNPCPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TamperWithNPCPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TEDisplayDollItemSyncPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TEDisplayDollItemSyncPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TEHatRackItemSyncPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TEHatRackItemSyncPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TeleportationPotionPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TeleportationPotionPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TeleportNPCThroughPortalPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TeleportNPCThroughPortalPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TeleportPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TeleportPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TeleportPlayerThroughPortalPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TeleportPlayerThroughPortalPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TemporaryAnimationPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TemporaryAnimationPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TileChangePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TileChangePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TileCountsPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TileCountsPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TileEntityPlacementPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TileEntityPlacementPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TileEntitySharingPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TileEntitySharingPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TileSectionPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TileSectionPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TileSquarePacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TileSquarePacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TogglePartyPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TogglePartyPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\TravelMerchantItemsPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\TravelMerchantItemsPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\UnlockPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\UnlockPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\UpdatePlayerLuckFactorsPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\UpdatePlayerLuckFactorsPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\UpdateTowerShieldStrengthsPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\UpdateTowerShieldStrengthsPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\WeaponsRackTryPlacingPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\WeaponsRackTryPlacingPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\WiredCannonShotPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\WiredCannonShotPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\WorldDataPacket.cs">
+        <Link>Delphinus.Generator.SerializationGenerator\WorldDataPacket.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\MessageID.cs">
+        <Link>MessageID.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\NetModuleType.cs">
+        <Link>NetModuleType.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\OTAPI.cs">
+        <Link>OTAPI.cs</Link>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="OTAPI.Upcoming" Version="3.0.20-alpha" />
+    </ItemGroup>
+
+</Project>

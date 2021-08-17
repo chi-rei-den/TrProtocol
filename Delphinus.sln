@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delphinus.Generator", "Delp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delphinus.Generator.Tests", "Delphinus.Generator.Tests\Delphinus.Generator.Tests.csproj", "{EF968F9C-A918-4539-BE8F-4CB8C6D67574}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delphinus.OTAPI.PC", "Delphinus.OTAPI.PC\Delphinus.OTAPI.PC.csproj", "{71F119A7-9A65-456F-9F53-421335A4327D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,12 @@ Global
 		{EF968F9C-A918-4539-BE8F-4CB8C6D67574}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF968F9C-A918-4539-BE8F-4CB8C6D67574}.OTAPI|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF968F9C-A918-4539-BE8F-4CB8C6D67574}.OTAPI|Any CPU.Build.0 = Debug|Any CPU
+		{71F119A7-9A65-456F-9F53-421335A4327D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71F119A7-9A65-456F-9F53-421335A4327D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71F119A7-9A65-456F-9F53-421335A4327D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71F119A7-9A65-456F-9F53-421335A4327D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71F119A7-9A65-456F-9F53-421335A4327D}.OTAPI|Any CPU.ActiveCfg = Debug|Any CPU
+		{71F119A7-9A65-456F-9F53-421335A4327D}.OTAPI|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

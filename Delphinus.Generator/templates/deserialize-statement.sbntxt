@@ -1,0 +1,4 @@
+﻿if ({{ condition ?? true }}) {
+    var value = {{ deserializer }};
+    {{ packet }}.{{ member_name }} = {{ expression ?? 'value' }};
+}

@@ -4,23 +4,29 @@
         <Configurations>Debug;Release</Configurations>
         <Platforms>AnyCPU</Platforms>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>8</LangVersion>
+        <DebugType>embedded</DebugType>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.11.0" />
-      <PackageReference Include="System.Text.Json" Version="5.0.2" />
+      <PackageReference Include="Scriban" Version="4.0.1" GeneratePathProperty="true" />
+      <PackageReference Include="YamlDotNet" Version="11.2.1" GeneratePathProperty="true" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="obj\**" />
-    </ItemGroup>
+    <PropertyGroup>
+        <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
+    </PropertyGroup>
+
+    <Target Name="GetDependencyTargetPaths">
+        <ItemGroup>
+            <TargetPathWithTargetPlatformMoniker Include="$(PKGYamlDotNet)\lib\netstandard1.3\YamlDotNet.dll" IncludeRuntimeDependency="false" />
+            <TargetPathWithTargetPlatformMoniker Include="$(PKGScriban)\lib\netstandard2.0\Scriban.dll" IncludeRuntimeDependency="false" />
+        </ItemGroup>
+    </Target>
 
     <ItemGroup>
-      <EmbeddedResource Remove="obj\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="obj\**" />
+        <EmbeddedResource Include="templates/*.sbntxt" />
     </ItemGroup>
 
 </Project>

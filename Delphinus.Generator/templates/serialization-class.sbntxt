@@ -1,0 +1,11 @@
+﻿{{~ for $u in using_statements ~}}
+{{ $u }}
+{{~ end ~}}
+
+namespace {{ namespace }} {
+    public static class Serialization {
+    {{~ for $mtd_tuple in method_tuples ~}}
+        {{ $mtd_tuple | string.replace '\n' '\n        ' }}
+    {{~ end ~}}
+    }
+}

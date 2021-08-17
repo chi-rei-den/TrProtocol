@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Dynamic;
 using System.Globalization;
-using System.Reflection.Metadata;
 
 namespace Delphinus.InternalPackets
 {

@@ -15,11 +15,12 @@ namespace Delphinus.InternalPackets
 
         public byte SelectedItem { get; set; }
         public Vector2 Position { get; set; }
-        [Condition("{0}.PulleyFlags[2]", Usage.Serialization)]
+
+        [Condition("{{packet}}.PulleyFlags[2]")]
         public Vector2 Velocity { get; set; }
-        [Condition("{0}.MiscFlags[6]", Usage.Serialization)]
+        [Condition("{{packet}}.MiscFlags[6]")]
         public Vector2 PotionOfReturnOriginalUsePosition { get; set; }
-        [Condition("{0}.MiscFlags[6]", Usage.Serialization)]
+        [Condition("{{packet}}.MiscFlags[6]")]
         public Vector2 PotionOfReturnHomePosition { get; set; }
     }
 }
