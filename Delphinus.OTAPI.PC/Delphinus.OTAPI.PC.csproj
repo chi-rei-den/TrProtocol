@@ -413,8 +413,8 @@
       <Compile Include="..\Delphinus\NetModuleType.cs">
         <Link>NetModuleType.cs</Link>
       </Compile>
-      <Compile Include="..\Delphinus\OTAPI.cs">
-        <Link>OTAPI.cs</Link>
+      <Compile Include="..\Delphinus\OTAPI.PC.Serializers.cs">
+        <Link>OTAPI.PC.Serializers.cs</Link>
       </Compile>
     </ItemGroup>
 

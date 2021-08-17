@@ -1,0 +1,36 @@
+﻿---
+Namespace: Delphinus.OTAPI
+CustomSerializers:
+  ushort[]: Serializers.Serialize(writer, value)
+  short[]: Serializers.Serialize(writer, value)
+  float[]: Serializers.Serialize(writer, value)
+  Vector2: Serializers.Serialize(writer, value)
+  Color: Serializers.Serialize(writer, value)
+  BitsByte: Serializers.Serialize(writer, value)
+  MultiToolMode: Serializers.Serialize(writer, value)
+  NetworkText: Serializers.Serialize(writer, value)
+  PlayerDeathReason: Serializers.Serialize(writer, value)
+  PlayerSpawnContext: Serializers.Serialize(writer, value)
+  NetModuleType: Serializers.Serialize(writer, value)
+  MessageID: Serializers.Serialize(writer, value)
+CustomDeserializers:
+  byte[]: Serializers.DeserializeBytes(reader, {{args0}})
+  ushort[]: Serializers.DeserializeUInt16Array(reader, {{args0}})
+  short[]: Serializers.DeserializeInt16Array(reader, {{args0}})
+  float[]: Serializers.DeserializeSingleArray(reader, {{args0}})
+  Vector2: Serializers.DeserializeVector2(reader)
+  Color: Serializers.DeserializeColor(reader)
+  BitsByte: Serializers.DeserializeBitsByte(reader)
+  MultiToolMode: Serializers.DeserializeMultiToolMode(reader)
+  NetworkText: Serializers.DeserializeNetworkText(reader)
+  PlayerDeathReason: Serializers.DeserializePlayerDeathReason(reader)
+  PlayerSpawnContext: Serializers.DeserializePlayerSpawnContext(reader)
+  NetModuleType: Serializers.DeserializeNetModuleType(reader)
+  MessageID: Serializers.DeserializeMessageID(reader)
+UsingStatements:
+  - using System.IO;
+  - using Microsoft.Xna.Framework;
+  - using Terraria;
+  - using Terraria.Localization;
+  - using Terraria.DataStructures;
+  - using static Terraria.GameContent.UI.WiresUI.Settings;

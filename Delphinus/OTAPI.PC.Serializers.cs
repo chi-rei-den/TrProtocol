@@ -9,7 +9,7 @@ using Terraria.Localization;
 
 namespace Delphinus
 {
-    public static class OTAPISerialization
+    public static class Serializers
     {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -51,22 +51,64 @@ namespace Delphinus
         internal static void Serialize(BinaryWriter writer, NetModuleType data)
             => writer.Write((byte)data);
 
-        internal static void Serialize(BinaryWriter writer, object data)
-            => throw new NotImplementedException();
-
-        internal static byte[] SerializeBytes(BinaryReader reader)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void Serialize(BinaryWriter writer, short[] data)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < data.Length; i++)
+            {
+                writer.Write(data[i]);
+            }
         }
 
-        internal static ushort[] DeserializeUInt16Array(BinaryReader reader)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void Serialize(BinaryWriter writer, ushort[] data)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < data.Length; i++)
+            {
+                writer.Write(data[i]);
+            }
         }
 
-        internal static short[] DeserializeInt16Array(BinaryReader reader)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void Serialize(BinaryWriter writer, float[] data)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < data.Length; i++)
+            {
+                writer.Write(data[i]);
+            }
+        }
+
+        internal static byte[] DeserializeBytes(BinaryReader reader, int count)
+            => reader.ReadBytes(count);
+
+        internal static ushort[] DeserializeUInt16Array(BinaryReader reader, int count)
+        {
+            var array = new ushort[count];
+            for (int i = 0; i < count; i++)
+            {
+                array[i] = reader.ReadUInt16();
+            }
+            return array;
+        }
+
+        internal static short[] DeserializeInt16Array(BinaryReader reader, int count)
+        {
+            var array = new short[count];
+            for (int i = 0; i < count; i++)
+            {
+                array[i] = reader.ReadInt16();
+            }
+            return array;
+        }
+
+        internal static float[] DeserializeSingleArray(BinaryReader reader, int count)
+        {
+            var array = new float[count];
+            for (int i = 0; i < count; i++)
+            {
+                array[i] = reader.ReadSingle();
+            }
+            return array;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

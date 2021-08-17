@@ -1,4 +1,7 @@
 ﻿if ({{ condition ?? true }}) {
+    {{ code ?! code }}
+    {{- code ? '/*' : '' -}}
     var value = {{ deserializer }};
     {{ packet }}.{{ member_name }} = {{ expression ?? 'value' }};
+    {{- code ? '*/' : '' }}
 }

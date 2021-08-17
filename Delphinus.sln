@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delphinus", "Delphinus\Delp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delphinus.Generator", "Delphinus.Generator\Delphinus.Generator.csproj", "{9757B63D-D6B8-45AB-83BC-80B80BCD4764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delphinus.Generator.Tests", "Delphinus.Generator.Tests\Delphinus.Generator.Tests.csproj", "{EF968F9C-A918-4539-BE8F-4CB8C6D67574}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delphinus.OTAPI.PC", "Delphinus.OTAPI.PC\Delphinus.OTAPI.PC.csproj", "{71F119A7-9A65-456F-9F53-421335A4327D}"
 EndProject
 Global
@@ -30,12 +28,6 @@ Global
 		{9757B63D-D6B8-45AB-83BC-80B80BCD4764}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9757B63D-D6B8-45AB-83BC-80B80BCD4764}.OTAPI|Any CPU.ActiveCfg = Debug|Any CPU
 		{9757B63D-D6B8-45AB-83BC-80B80BCD4764}.OTAPI|Any CPU.Build.0 = Debug|Any CPU
-		{EF968F9C-A918-4539-BE8F-4CB8C6D67574}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF968F9C-A918-4539-BE8F-4CB8C6D67574}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF968F9C-A918-4539-BE8F-4CB8C6D67574}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF968F9C-A918-4539-BE8F-4CB8C6D67574}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF968F9C-A918-4539-BE8F-4CB8C6D67574}.OTAPI|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF968F9C-A918-4539-BE8F-4CB8C6D67574}.OTAPI|Any CPU.Build.0 = Debug|Any CPU
 		{71F119A7-9A65-456F-9F53-421335A4327D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{71F119A7-9A65-456F-9F53-421335A4327D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71F119A7-9A65-456F-9F53-421335A4327D}.Release|Any CPU.ActiveCfg = Release|Any CPU

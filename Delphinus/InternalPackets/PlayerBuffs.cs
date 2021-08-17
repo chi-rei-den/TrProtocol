@@ -4,7 +4,7 @@
     {
         public MessageID Type => MessageID.PlayerBuffs;
         public byte PlayerSlot { get; set; }
-        [ArraySize(22)]
+        [Arguments("22")]
         public ushort[] BuffTypes { get; set; }
     }
 }

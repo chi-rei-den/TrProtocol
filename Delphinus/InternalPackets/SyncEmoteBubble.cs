@@ -8,6 +8,6 @@
         public byte EmoteType { get; set; }
 
         //FIXME: Terrible Format, can't understand
-        public byte[] Raw { get; set; }
+        // public byte[] Raw { get; set; }
     }
 }

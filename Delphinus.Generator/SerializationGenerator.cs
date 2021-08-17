@@ -60,18 +60,17 @@ namespace Delphinus.Generator
             SerializationContextReceiver receiver,
             GenerationConfig config)
         {
-            var templateCtx = new TemplateContext();
-
-            templateCtx.SetVar("using_statements", config.UsingStatements);
-            templateCtx.SetVar("namespace", config.Namespace);
-            templateCtx.SetVar("type_kind", config.TypeKind);
-            templateCtx.SetVar("base_type", config.BaseType);
-            templateCtx.SetVar("reader_type", config.Reader);
-            templateCtx.SetVar("writer_type", config.Writer);
-            templateCtx.SetVar("packet", "this");
-
             foreach (var packetType in receiver.PacketTypes)
             {
+                var templateCtx = new TemplateContext();
+
+                templateCtx.SetVar("using_statements", config.UsingStatements);
+                templateCtx.SetVar("namespace", config.Namespace);
+                templateCtx.SetVar("type_kind", config.TypeKind);
+                templateCtx.SetVar("base_type", config.BaseType);
+                templateCtx.SetVar("reader_type", config.Reader);
+                templateCtx.SetVar("writer_type", config.Writer);
+                templateCtx.SetVar("packet", "this");
                 templateCtx.SetVar("packet_type_name", packetType.Identifier.Text);
                 templateCtx.SetVar("members", packetType.Members);
 
@@ -79,8 +78,8 @@ namespace Delphinus.Generator
                 var deserializeStatements = new List<string>();
                 foreach (var member in packetType.Members)
                 {
-                    serializeStatements.Add(RenderSerializeStatement(member, templateCtx, config));
-                    deserializeStatements.Add(RenderDeserializeStatement(member, templateCtx, config));
+                    serializeStatements.Add(RenderSerializeStatement(member, templateCtx, context, config));
+                    deserializeStatements.Add(RenderDeserializeStatement(member, templateCtx, context, config));
                 }
 
                 templateCtx.SetVar("serialize_statements", serializeStatements);
@@ -110,20 +109,21 @@ namespace Delphinus.Generator
             var methodTuples = new List<string>();
             foreach (var packetType in receiver.PacketTypes)
             {
-                templateCtx.SetVar("packet_type_name", packetType.Identifier.Text);
-                templateCtx.SetVar("members", packetType.Members);
+                var subCtx = new TemplateContext(templateCtx.BuiltinObject);
+                subCtx.SetVar("packet_type_name", packetType.Identifier.Text);
+                subCtx.SetVar("members", packetType.Members);
 
                 var serializeStatements = new List<string>();
                 var deserializeStatements = new List<string>();
 
                 foreach (var member in packetType.Members)
                 {
-                    serializeStatements.Add(RenderSerializeStatement(member, templateCtx, config));
-                    deserializeStatements.Add(RenderDeserializeStatement(member, templateCtx, config));
+                    serializeStatements.Add(RenderSerializeStatement(member, subCtx, context, config));
+                    deserializeStatements.Add(RenderDeserializeStatement(member, subCtx, context, config));
                 }
 
-                templateCtx.SetVar("serialize_statements", serializeStatements);
-                templateCtx.SetVar("deserialize_statements", deserializeStatements);
+                subCtx.SetVar("serialize_statements", serializeStatements);
+                subCtx.SetVar("deserialize_statements", deserializeStatements);
 
                 methodTuples.Add(_serializationMethodTemplate.Render(templateCtx));
             }
@@ -138,6 +138,7 @@ namespace Delphinus.Generator
         private string RenderSerializeStatement(
             MemberDeclarationSyntax memberDecl,
             TemplateContext context,
+            GeneratorExecutionContext genContext,
             GenerationConfig config)
         {
             if (!IsPublicOrInternal(memberDecl.Modifiers) || IsStaticOrConstant(memberDecl.Modifiers))
@@ -146,17 +147,7 @@ namespace Delphinus.Generator
             if (memberDecl.FindAttribute("NoSerialization") != null)
                 return "";
 
-            var condAttr = memberDecl.FindAttribute("Condition");
-            var exprAttr = memberDecl.FindAttribute("Expression");
-
-            var condition = GetCodeFromAttribute(condAttr, "Deserialize");
-            if (condition != null) condition = Template.Parse(condition).Render(context);
-
-            var expression = GetCodeFromAttribute(exprAttr, "Deserialize");
-            if (expression != null) expression = Template.Parse(expression).Render(context);
-
-            context.SetVar("condition", condition);
-            context.SetVar("expression", expression);
+            AddProcessorsIntoContext(memberDecl, context, genContext, true);
 
             if (memberDecl is PropertyDeclarationSyntax propDecl)
             {
@@ -186,6 +177,7 @@ namespace Delphinus.Generator
         private string RenderDeserializeStatement(
             MemberDeclarationSyntax memberDecl,
             TemplateContext context,
+            GeneratorExecutionContext genContext,
             GenerationConfig config)
         {
             if (!IsPublicOrInternal(memberDecl.Modifiers) || IsStaticOrConstant(memberDecl.Modifiers))
@@ -197,17 +189,7 @@ namespace Delphinus.Generator
             if (memberDecl.FindAttribute("NoSerialization") != null)
                 return "";
 
-            var condAttr = memberDecl.FindAttribute("Condition");
-            var exprAttr = memberDecl.FindAttribute("Expression");
-
-            var condition = GetCodeFromAttribute(condAttr, "Serialize");
-            if (condition != null) condition = Template.Parse(condition).Render(context);
-
-            var expression = GetCodeFromAttribute(exprAttr, "Serialize");
-            if (expression != null) expression = Template.Parse(expression).Render(context);
-
-            context.SetVar("condition", condition);
-            context.SetVar("expression", expression);
+            AddProcessorsIntoContext(memberDecl, context, genContext, false);
 
             if (memberDecl is PropertyDeclarationSyntax propDecl)
             {
@@ -241,29 +223,87 @@ namespace Delphinus.Generator
             return _deserializeStatementTemplate.Render(context);
         }
 
+        private static void AddProcessorsIntoContext(
+            MemberDeclarationSyntax memberDecl,
+            TemplateContext context,
+            GeneratorExecutionContext genContext,
+            bool isSerialize)
+        {
+            context.SetVar("condition", null);
+            context.SetVar("expression", null);
+            for (int i = 0; i < 10; i++)
+            {
+                context.SetVar($"args[i]", null);
+            }
+            context.SetVar("code", null);
+
+            var anotherSide = isSerialize ? "Deserialize" : "Serialize";
+            var manualAttr = memberDecl.FindAttribute("Manual");
+            var condAttr = memberDecl.FindAttribute("Condition");
+            var exprAttr = memberDecl.FindAttribute("Expression");
+            var argsAttr = memberDecl.FindAttribute("Arguments");
+
+            if (manualAttr != null)
+            {
+                var code = GetCodeFromAttribute(manualAttr, isSerialize, genContext);
+                if (code != null)
+                {
+                    context.SetVar("code", Template.Parse(code).Render(context));
+                    return;
+                }
+            }
+
+            var condition = GetCodeFromAttribute(condAttr, isSerialize, genContext);
+            if (condition != null) condition = Template.Parse(condition).Render(context);
+
+            var expression = GetCodeFromAttribute(exprAttr, isSerialize, genContext);
+            if (expression != null) expression = Template.Parse(expression).Render(context);
+
+            if (argsAttr?.ArgumentList != null && argsAttr.ArgumentList.Arguments.Count > 0)
+            {
+                for (int i = 0; i < argsAttr.ArgumentList.Arguments.Count; i++)
+                {
+                    var arg = argsAttr.ArgumentList.Arguments[i];
+                    context.SetVar($"args{i}", Template.Parse(GetAttributeArgValueString(arg, genContext)).Render(context));
+                }
+            }
+
+            context.SetVar("condition", condition);
+            context.SetVar("expression", expression);
+        }
+
         private bool IsPublicOrInternal(SyntaxTokenList modifiers)
             => modifiers.Any(m => m.Text == "public" || m.Text == "internal");
 
         private bool IsStaticOrConstant(SyntaxTokenList modifiers)
             => modifiers.Any(m => m.Text == "static" || m.Text == "const");
 
-        private static string GetCodeFromAttribute(AttributeSyntax condAttr, string anotherSide)
+        private static string GetCodeFromAttribute(AttributeSyntax attr, bool isSerialize, GeneratorExecutionContext context)
         {
-            if (condAttr != null)
+            if (attr != null)
             {
-                var args = condAttr?.ArgumentList;
-                if (args != null && args.Arguments.Count > 1 && args.Arguments[1].ToString() == $"Usage.{anotherSide}")
+                var args = attr?.ArgumentList;
+                if (args != null && args.Arguments.Count > 1)
                 {
-                    return null;
+                    if (args.Arguments[1].ToString() == (isSerialize ? "Usage.Deserialize" : "Usage.Serialize"))
+                    {
+                        return null;
+                    }
+                    return isSerialize
+                        ? GetAttributeArgValueString(args.Arguments[0], context)
+                        : GetAttributeArgValueString(args.Arguments[1], context);
                 }
                 else if (args != null && args.Arguments.Count > 0)
                 {
-                    return (args.Arguments.First().Expression as LiteralExpressionSyntax)?.Token.ValueText;
+                    return GetAttributeArgValueString(args.Arguments.First(), context);
                 }
             }
 
             return null;
         }
+
+        private static string GetAttributeArgValueString(AttributeArgumentSyntax arg, GeneratorExecutionContext context)
+            => context.Compilation.GetSemanticModel(arg.SyntaxTree).GetConstantValue(arg.Expression).ToString();
 
         private static Dictionary<string, string> InitDefaultSerializers()
         {
@@ -274,6 +314,7 @@ namespace Delphinus.Generator
                 "float", "double", "decimal", "string", "bool", "char",
                 "Int32", "Int64", "UInt32", "UInt64", "Int16", "UInt16", "Byte", "SByte",
                 "Single", "Double", "Decimal", "String", "Boolean", "Char",
+                "byte[]", "Byte[]", "char[]", "Char[]",
             };
             foreach (var type in primitiveTypes)
             {

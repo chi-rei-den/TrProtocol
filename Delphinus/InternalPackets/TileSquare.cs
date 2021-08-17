@@ -3,6 +3,7 @@
     internal class TileSquarePacket : IPacket
     {
         public MessageID Type => MessageID.TileSquare;
-        public byte[] Data { get; set; }
+        //TODO
+        // public byte[] Data { get; set; }
     }
 }

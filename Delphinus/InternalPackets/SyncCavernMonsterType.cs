@@ -3,7 +3,7 @@
     internal class SyncCavernMonsterTypePacket : IPacket
     {
         public MessageID Type => MessageID.SyncCavernMonsterType;
-        [ArraySize(6)]
+        [Arguments("6")]
         public short[] CavenMonsterType { get; set; }
     }
 }

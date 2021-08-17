@@ -2,7 +2,6 @@
 
 namespace Delphinus.InternalPackets
 {
-    [Manual]
     internal class SyncNPCPacket : IPacket
     {
         public MessageID Type => MessageID.SyncNPC;
@@ -16,19 +15,49 @@ namespace Delphinus.InternalPackets
         public BitsByte Flags1 { get; set; }
         public BitsByte Flags2 { get; set; }
 
-        public float AI1 { get; set; }
-        public float AI2 { get; set; }
-        public float AI3 { get; set; }
-        public float AI4 { get; set; }
+        private const string varFlags1 = "{{~ $f = packet + '.Flags1' ~}}";
+        private const string aiCount =
+            "({{$f}} & 0x4) >> 2 + ({{$f}} & 0x8) >> 3 + ({{$f}} & 0x10) >> 4 + ({{$f}} & 0x20) >> 5";
+        [Arguments(varFlags1 + aiCount)]
+        public float[] AIs { get; set; }
 
         public short NPCNetID { get; set; }
 
-        public byte PlayerCountOverride { get; set; }
-        public float StrengthMultiplier { get; set; }
-        public BitsByte Bit3 { get; set; }
-        public sbyte PrettyShortHP { get; set; }
-        public short ShortHP { get; set; }
-        public int HP { get; set; }
-        public byte[] Extra { get; set; }
+        [Condition("{{packet}}.Flags2[0]")] public byte PlayerCountOverride { get; set; }
+        [Condition("{{packet}}.Flags2[2]")] public float StrengthMultiplier { get; set; }
+
+        [Condition("!{{packet}}.Flags1[7]")] public byte LifeLen { get; set; }
+
+        [Condition("!{{packet}}.Flags1[7]")]
+        [Manual(@"
+switch ({{packet}}.LifeLen) {
+case 1:
+    writer.Write((byte){{packet}}.Life);
+    break;
+case 2:
+    writer.Write((short){{packet}}.Life);
+    break;
+case 4:
+    writer.Write((int){{packet}}.Life);
+    break;
+}
+", @"
+switch ({{packet}}.LifeLen) {
+case 1:
+    {{packet}}.Life = reader.ReadByte();
+    break;
+case 2:
+    {{packet}}.Life = reader.ReadInt16();
+    break;
+case 4:
+    {{packet}}.Life = reader.ReadInt32();
+    break;
+}")]
+        public int Life { get; set; }
+
+        private const string varNPCType = "{{~ $t = 'Main.npc[' + packet + '.NPCSlot].type' ~}}";
+        private const string isCatchable = "{{$t}} >= 0 && {{$t}} < 668 && Main.npcCatchable[{{$t}}]";
+        [Condition(varNPCType + isCatchable)]
+        public byte ReleaseOwner { get; set; }
     }
 }

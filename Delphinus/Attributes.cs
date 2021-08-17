@@ -14,18 +14,6 @@ namespace Delphinus
 
     }
 
-
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-    public sealed class ArraySizeAttribute : Attribute
-    {
-        public int size;
-
-        public ArraySizeAttribute(int size)
-        {
-            this.size = size;
-        }
-    }
-
     public enum Usage
     {
         Serialize,
@@ -36,35 +24,22 @@ namespace Delphinus
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public sealed class ConditionAttribute : Attribute
     {
-        public string Condition { get; }
-
-        public Usage Usage { get; }
-
-        public ConditionAttribute(string condition, Usage usage = Usage.Both)
-        {
-            Condition = condition;
-            Usage = usage;
-        }
+        public ConditionAttribute(string condition, Usage usage = Usage.Both) { }
+        public ConditionAttribute(string serialize, string deserialize) { }
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public sealed class ExpressionAttribute : Attribute
     {
-        public string Expression { get; }
-
-        public Usage Usage { get; }
-
-        public ExpressionAttribute(string expression, Usage usage = Usage.Both)
-        {
-            Expression = expression;
-            Usage = usage;
-        }
+        public ExpressionAttribute(string expression, Usage usage = Usage.Both) { }
+        public ExpressionAttribute(string serialize, string deserialize) { }
     }
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public sealed class ManualAttribute : Attribute
     {
-
+        public ManualAttribute(string code, Usage usage = Usage.Both) { }
+        public ManualAttribute(string serialize, string deserialize) { }
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]

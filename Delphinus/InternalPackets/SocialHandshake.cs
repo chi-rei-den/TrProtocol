@@ -3,6 +3,7 @@
     internal class SocialHandshakePacket : IPacket
     {
         public MessageID Type => MessageID.SocialHandshake;
-        public byte[] Raw { get; set; }
+        //TODO
+        // public byte[] Raw { get; set; }
     }
 }

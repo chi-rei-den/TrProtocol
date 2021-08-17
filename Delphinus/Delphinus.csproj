@@ -17,6 +17,10 @@
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
   
+  <ItemGroup>
+    <Compile Remove="OTAPI.PC.Serializers.cs" />
+  </ItemGroup>
+  
   <Choose>
     <When Condition=" '$(Configuration)'=='Debug' ">
       <PropertyGroup>
@@ -27,6 +31,7 @@
         <DefineConstants>DEBUG;TRACE</DefineConstants>
       </PropertyGroup>
     </When>
+    
     <When Condition=" '$(Configuration)'=='OTAPI' ">
       <PropertyGroup>
         <DebugSymbols>false</DebugSymbols>
@@ -35,15 +40,17 @@
         <DefineConstants>OTAPI;TRACE</DefineConstants>
         <CompilerGeneratedFilesOutputPath>GeneratedFiles/OTAPI</CompilerGeneratedFilesOutputPath>
       </PropertyGroup>
+
+      <ItemGroup>
+        <PackageReference Include="OTAPI.Upcoming" Version="3.0.20-alpha" />
+        <Compile Include="OTAPI.PC.Serializers.cs" />
+        <AdditionalFiles Include="Configs/OTAPI.PC.delphinus.yml" />
+      </ItemGroup>
     </When>
   </Choose>
 
   <ItemGroup>
     <ProjectReference Include="..\Delphinus.Generator\Delphinus.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="OTAPI.Upcoming" Version="3.0.20-alpha" Condition=" '$(Configuration)'=='OTAPI' " />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,10 +63,6 @@
 
   <ItemGroup>
     <None Remove="GeneratedFiles\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="Configs/**.delphinus.yml" />
   </ItemGroup>
 
 </Project>

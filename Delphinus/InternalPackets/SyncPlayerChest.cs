@@ -6,6 +6,7 @@
         public short Chest { get; set; }
         public short PosX { get; set; }
         public short PosY { get; set; }
-        public byte[] Extra { get; set; }
+        //TODO
+        // public byte[] Extra { get; set; }
     }
 }
