@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class TeleportationPotionPacket : IPacket
+    internal class TeleportationPotion : IPacket
     {
-        public MessageID Type => MessageID.TeleportationPotion;
         public byte Style { get; set; }
     }
 }

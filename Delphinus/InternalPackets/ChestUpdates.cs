@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class ChestUpdatesPacket : IPacket
+    internal class ChestUpdates : IPacket
     {
-        public MessageID Type => MessageID.ChestUpdates;
         public byte Operation { get; set; }
         public short PosX { get; set; }
         public short PosY { get; set; }

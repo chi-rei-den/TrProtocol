@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class TileChangePacket : IPacket
+    internal class TileChange : IPacket
     {
-        public MessageID Type => MessageID.TileChange;
         public byte ChangeType { get; set; }
         public short PosX { get; set; }
         public short PosY { get; set; }

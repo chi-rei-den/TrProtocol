@@ -1,7 +1,6 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class FinishedConnectingToServerPacket : IPacket
+    internal class FinishedConnectingToServer : IPacket
     {
-        public MessageID Type => MessageID.FinishedConnectingToServer;
     }
 }

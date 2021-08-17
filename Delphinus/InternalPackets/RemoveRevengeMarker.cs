@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class RemoveRevengeMarkerPacket : IPacket
+    internal class RemoveRevengeMarker : IPacket
     {
-        public MessageID Type => MessageID.RemoveRevengeMarker;
         public int ID { get; set; }
     }
 }

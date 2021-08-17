@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class WiredCannonShotPacket : IPacket, IPlayerSlot
+    internal class WiredCannonShot : IPacket, IPlayerSlot
     {
-        public MessageID Type => MessageID.WiredCannonShot;
         public short Damage { get; set; }
         public float Knockback { get; set; }
         public short PosX { get; set; }

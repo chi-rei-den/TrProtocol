@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class PlayerControlsPacket : IPacket, IPlayerSlot
+    internal class PlayerControls : IPacket, IPlayerSlot
     {
-        public MessageID Type => MessageID.PlayerControls;
 
         public byte PlayerSlot { get; set; }
 

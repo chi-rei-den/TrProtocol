@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class PlaceObjectPacket : IPacket
+    internal class PlaceObject : IPacket
     {
-        public MessageID Type => MessageID.PlaceObject;
         public short PosX { get; set; }
         public short PosY { get; set; }
         public short ObjectType { get; set; }

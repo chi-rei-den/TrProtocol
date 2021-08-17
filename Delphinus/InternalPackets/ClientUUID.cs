@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class ClientUUIDPacket : IPacket
+    internal class ClientUUID : IPacket
     {
-        public MessageID Type => MessageID.ClientUUID;
         public string UUID { get; set; }
     }
 }

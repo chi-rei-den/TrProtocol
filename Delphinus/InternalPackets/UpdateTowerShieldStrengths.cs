@@ -1,9 +1,10 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class UpdateTowerShieldStrengthsPacket : IPacket
+    internal class UpdateTowerShieldStrengths : IPacket
     {
-        public MessageID Type => MessageID.UpdateTowerShieldStrengths;
-        [Arguments("4")]
-        public ushort[] ShieldStrength { get; set; }
+        public ushort SolarShieldStrength { get; set; }
+        public ushort VortexShieldStrength { get; set; }
+        public ushort NebulaShieldStrength { get; set; }
+        public ushort StardustShieldStrength { get; set; }
     }
 }

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Delphinus.InternalPackets
 {
-    internal class RequestPasswordPacket : IPacket
+    internal class RequestPassword : IPacket
     {
-        public MessageID Type => MessageID.RequestPassword;
     }
 }

@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class ShopOverridePacket : IPacket
+    internal class ShopOverride : IPacket
     {
-        public MessageID Type => MessageID.ShopOverride;
         public byte ItemSlot { get; set; }
         public short ItemType { get; set; }
         public short Stack { get; set; }

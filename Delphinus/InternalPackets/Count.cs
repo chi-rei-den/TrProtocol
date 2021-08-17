@@ -1,7 +1,6 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class CountPacket : IPacket
+    internal class Count : IPacket
     {
-        public MessageID Type => MessageID.Count;
     }
 }

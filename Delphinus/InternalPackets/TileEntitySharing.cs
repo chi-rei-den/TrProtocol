@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class TileEntitySharingPacket : IPacket
+    internal class TileEntitySharing : IPacket
     {
-        public MessageID Type => MessageID.TileEntitySharing;
         public int ID { get; set; }
         public bool HasTileEntity { get; set; }
         [Condition("{{packet}}.HasTileEntity")]

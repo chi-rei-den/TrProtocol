@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class SpecialFXPacket : IPacket
+    internal class SpecialFX : IPacket
     {
-        public MessageID Type => MessageID.SpecialFX;
         public byte GrowType { get; set; }
         public int PosX { get; set; }
         public int PosY { get; set; }

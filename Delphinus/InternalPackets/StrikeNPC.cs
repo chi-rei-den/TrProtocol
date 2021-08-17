@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class StrikeNPCPacket : IPacket, INPCSlot
+    internal class StrikeNPC : IPacket, INPCSlot
     {
-        public MessageID Type => MessageID.StrikeNPC;
         public short NPCSlot { get; set; }
         public short Damage { get; set; }
         public float Knockback { get; set; }

@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class SyncChestItemPacket : IPacket
+    internal class SyncChestItem : IPacket
     {
-        public MessageID Type => MessageID.SyncChestItem;
         public short ChestSlot { get; set; }
         public byte ChestItemSlot { get; set; }
         public short Stack { get; set; }

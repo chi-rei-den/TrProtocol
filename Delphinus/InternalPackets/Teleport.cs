@@ -2,15 +2,13 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class TeleportPacket : IPacket, IPlayerSlot
+    internal class Teleport : IPacket, IPlayerSlot
     {
-        public MessageID Type => MessageID.Teleport;
-
         public BitsByte Flags { get; set; }
 
         public byte PlayerSlot { get; set; }
 
-        public byte HighBitOfPlayerIsAlwaysZero { get; set; } = 0;
+        public byte HighBitOfPlayerIsAlwaysZero { get; set; }
 
         public Vector2 Position { get; set; }
 

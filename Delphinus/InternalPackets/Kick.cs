@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class KickPacket : IPacket
+    internal class Kick : IPacket
     {
-        public MessageID Type => MessageID.Kick;
         public NetworkText Reason { get; set; }
     }
 }

@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class LoadPlayerPacket : IPacket, IPlayerSlot
+    internal class LoadPlayer : IPacket, IPlayerSlot
     {
-        public MessageID Type => MessageID.LoadPlayer;
         public byte PlayerSlot { get; set; }
     }
 }

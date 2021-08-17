@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class LandGolfBallInCupPacket : IPacket, IOtherPlayerSlot
+    internal class LandGolfBallInCup : IPacket, IOtherPlayerSlot
     {
-        public MessageID Type => MessageID.LandGolfBallInCup;
         public byte OtherPlayerSlot { get; set; }
         public ushort PosX { get; set; }
         public ushort PosY { get; set; }

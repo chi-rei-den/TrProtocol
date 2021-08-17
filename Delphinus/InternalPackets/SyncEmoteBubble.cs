@@ -1,13 +1,13 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class SyncEmoteBubblePacket : IPacket
+    internal class SyncEmoteBubble : IPacket
     {
-        public MessageID Type => MessageID.SyncEmoteBubble;
-        public int ID { get; set; }
-
-        public byte EmoteType { get; set; }
-
-        //FIXME: Terrible Format, can't understand
-        // public byte[] Raw { get; set; }
+        public int EmoteID { get; set; }
+        public byte AnchorType { get; set; }
+        [Condition("{{packet}}.AnchorType != 255")] public byte PlayerSlot { get; set; }
+        [Condition("{{packet}}.AnchorType != 255")] public byte HighBitOfPlayerIsAlwaysZero { get; set; }
+        [Condition("{{packet}}.AnchorType != 255")] public ushort EmoteLifeTime { get; set; }
+        [Condition("{{packet}}.AnchorType != 255")] public byte Emote { get; set; }
+        [Condition("{{packet}}.AnchorType != 255 && {{packet}}.Emote < 0")] public short EmoteMetaData { get; set; }
     }
 }

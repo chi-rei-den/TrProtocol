@@ -2,10 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class SyncNPCPacket : IPacket
+    internal class SyncNPC : IPacket
     {
-        public MessageID Type => MessageID.SyncNPC;
-
         public short NPCSlot { get; set; }
 
         public Vector2 Offset { get; set; }

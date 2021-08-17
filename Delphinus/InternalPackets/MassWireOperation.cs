@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class MassWireOperationPacket : IPacket
+    internal class MassWireOperation : IPacket
     {
-        public MessageID Type => MessageID.MassWireOperation;
         public short StartX { get; set; }
         public short StartY { get; set; }
         public short EndX { get; set; }

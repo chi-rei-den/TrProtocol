@@ -1,10 +1,12 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class TEDisplayDollItemSyncPacket : IPacket, IPlayerSlot
+    internal class TEDisplayDollItemSync : IPacket, IPlayerSlot
     {
-        public MessageID Type => MessageID.TEDisplayDollItemSync;
         public byte PlayerSlot { get; set; }
-        //FIXME: FUCKING TERRIBLE FORMAT
-        // public byte[] Extra { get; set; }
+        public int TileEntityID { get; set; }
+        public byte ItemIndex { get; set; }
+        public ushort ItemID { get; set; }
+        public ushort Stack { get; set; }
+        public byte Prefix { get; set; }
     }
 }

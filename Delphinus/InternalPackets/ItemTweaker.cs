@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class ItemTweakerPacket : IPacket, IItemSlot
+    internal class ItemTweaker : IPacket, IItemSlot
     {
-        public MessageID Type => MessageID.ItemTweaker;
 
         public short ItemSlot { get; set; }
 

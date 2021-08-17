@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class SendNPCBuffsPacket : IPacket, INPCSlot
+    internal class SendNPCBuffs : IPacket, INPCSlot
     {
-        public MessageID Type => MessageID.SendNPCBuffs;
         public short NPCSlot { get; set; }
         public ushort BuffType1 { get; set; }
         public short BuffTime1 { get; set; }

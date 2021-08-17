@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class ReadSignPacket : IPacket, IPlayerSlot
+    internal class ReadSign : IPacket, IPlayerSlot
     {
-        public MessageID Type => MessageID.ReadSign;
         public short SignSlot { get; set; }
         public short PosX { get; set; }
         public short PosY { get; set; }

@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class MoonlordCountdownPacket : IPacket
+    internal class MoonlordCountdown : IPacket
     {
-        public MessageID Type => MessageID.MoonlordCountdown;
         public int Countdown { get; set; }
     }
 }

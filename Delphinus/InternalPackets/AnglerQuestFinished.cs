@@ -1,7 +1,6 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class AnglerQuestFinishedPacket : IPacket
+    internal class AnglerQuestFinished : IPacket
     {
-        public MessageID Type => MessageID.AnglerQuestFinished;
     }
 }

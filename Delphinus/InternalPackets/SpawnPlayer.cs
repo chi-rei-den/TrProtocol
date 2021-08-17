@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class SpawnPlayerPacket : IPacket, IPlayerSlot
+    internal class SpawnPlayer : IPacket, IPlayerSlot
     {
-        public MessageID Type => MessageID.SpawnPlayer;
         public byte PlayerSlot { get; set; }
         public short PosX { get; set; }
         public short PosY { get; set; }

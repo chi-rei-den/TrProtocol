@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class SyncProjectilePacket : IPacket, IProjSlot, IPlayerSlot
+    internal class SyncProjectile : IPacket, IProjSlot, IPlayerSlot
     {
-        public MessageID Type => MessageID.SyncProjectile;
         public short ProjSlot { get; set; }
         public Vector2 Position { get; set; }
         public Vector2 Velocity { get; set; }

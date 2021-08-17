@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class PlayerHurtV2Packet : IPacket, IOtherPlayerSlot
+    internal class PlayerHurtV2 : IPacket, IOtherPlayerSlot
     {
-        public MessageID Type => MessageID.PlayerHurtV2;
         public byte OtherPlayerSlot { get; set; }
         public PlayerDeathReason Reason { get; set; }
         public short Damage { get; set; }

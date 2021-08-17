@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class MenuSunMoonPacket : IPacket
+    internal class MenuSunMoon : IPacket
     {
-        public MessageID Type => MessageID.MenuSunMoon;
         public bool DayTime { get; set; }
         public int Time { get; set; }
         public short Sun { get; set; }

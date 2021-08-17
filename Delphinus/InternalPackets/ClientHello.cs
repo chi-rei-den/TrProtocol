@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Delphinus.InternalPackets
 {
-    internal class ClientHelloPacket : IPacket
+    internal class ClientHello : IPacket
     {
-        public MessageID Type => MessageID.ClientHello;
         public string Version { get; set; }
     }
 }

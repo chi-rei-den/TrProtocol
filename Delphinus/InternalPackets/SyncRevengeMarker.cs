@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class SyncRevengeMarkerPacket : IPacket
+    internal class SyncRevengeMarker : IPacket
     {
-        public MessageID Type => MessageID.SyncRevengeMarker;
         public int ID { get; set; }
         public Vector2 Position { get; set; }
         public int NetID { get; set; }

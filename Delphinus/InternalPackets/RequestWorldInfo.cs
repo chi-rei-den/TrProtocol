@@ -1,7 +1,6 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class RequestWorldInfoPacket : IPacket
+    internal class RequestWorldInfo : IPacket
     {
-        public MessageID Type => MessageID.RequestWorldInfo;
     }
 }

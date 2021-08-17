@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class NebulaLevelupRequestPacket : IPacket, IPlayerSlot
+    internal class NebulaLevelupRequest : IPacket, IPlayerSlot
     {
-        public MessageID Type => MessageID.NebulaLevelupRequest;
         public byte PlayerSlot { get; set; }
         public ushort NebulaType { get; set; }
         public Vector2 Position { get; set; }

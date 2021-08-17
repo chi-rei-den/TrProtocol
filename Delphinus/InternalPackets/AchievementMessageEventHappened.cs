@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class AchievementMessageEventHappenedPacket : IPacket
+    internal class AchievementMessageEventHappened : IPacket
     {
-        public MessageID Type => MessageID.AchievementMessageEventHappened;
         public short EventType { get; set; }
     }
 }

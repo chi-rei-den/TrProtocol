@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class InstancedItemPacket : IPacket, IItemSlot
+    internal class InstancedItem : IPacket, IItemSlot
     {
-        public MessageID Type => MessageID.InstancedItem;
         public short ItemSlot { get; set; }
         public Vector2 Position { get; set; }
         public Vector2 Velocity { get; set; }

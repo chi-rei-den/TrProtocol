@@ -1,7 +1,6 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class ClientSyncedInventoryPacket : IPacket
+    internal class ClientSyncedInventory : IPacket
     {
-        public MessageID Type => MessageID.ClientSyncedInventory;
     }
 }

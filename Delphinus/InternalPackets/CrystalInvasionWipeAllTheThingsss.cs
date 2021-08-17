@@ -1,7 +1,6 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class CrystalInvasionWipeAllTheThingsssPacket : IPacket
+    internal class CrystalInvasionWipeAllTheThings: IPacket
     {
-        public MessageID Type => MessageID.CrystalInvasionWipeAllTheThings;
     }
 }

@@ -1,9 +1,8 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class SyncCavernMonsterTypePacket : IPacket
+    internal class SyncCavernMonsterType : IPacket
     {
-        public MessageID Type => MessageID.SyncCavernMonsterType;
         [Arguments("6")]
-        public short[] CavenMonsterType { get; set; }
+        public short[] CavernMonsterType { get; set; }
     }
 }

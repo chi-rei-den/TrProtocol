@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class FoodPlatterTryPlacingPacket : IPacket
+    internal class FoodPlatterTryPlacing : IPacket
     {
-        public MessageID Type => MessageID.FoodPlatterTryPlacing;
         public short PosX { get; set; }
         public short PosY { get; set; }
         public short ItemType { get; set; }

@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class CrystalInvasionSendWaitTimePacket : IPacket
+    internal class CrystalInvasionSendWaitTime: IPacket
     {
-        public MessageID Type => MessageID.CrystalInvasionSendWaitTime;
         public int WaitTime { get; set; }
     }
 }

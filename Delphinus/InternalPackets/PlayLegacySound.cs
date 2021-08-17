@@ -2,9 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class PlayLegacySoundPacket : IPacket
+    internal class PlayLegacySound : IPacket
     {
-        public MessageID Type => MessageID.PlayLegacySound;
         public Vector2 Point { get; set; }
         public ushort Sound { get; set; }
         public BitsByte Flags { get; set; }

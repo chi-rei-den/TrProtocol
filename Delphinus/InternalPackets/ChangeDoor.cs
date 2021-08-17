@@ -4,9 +4,8 @@ using System.Globalization;
 
 namespace Delphinus.InternalPackets
 {
-    internal class ChangeDoorPacket : IPacket
+    internal class ChangeDoor : IPacket
     {
-        public MessageID Type => MessageID.ChangeDoor;
         public bool ChangeType { get; set; }
         public short PosX { get; set; }
         public short PosY { get; set; }

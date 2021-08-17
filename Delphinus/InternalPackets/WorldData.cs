@@ -2,10 +2,8 @@
 
 namespace Delphinus.InternalPackets
 {
-    internal class WorldDataPacket : IPacket
+    internal class WorldData : IPacket
     {
-        public MessageID Type => MessageID.WorldData;
-
         public int Time { get; set; }
         public BitsByte DayAndMoonInfo { get; set; }
         public byte MoonPhase { get; set; }

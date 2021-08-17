@@ -1,7 +1,6 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class TogglePartyPacket : IPacket
+    internal class ToggleParty : IPacket
     {
-        public MessageID Type => MessageID.ToggleParty;
     }
 }

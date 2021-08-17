@@ -4,7 +4,6 @@ namespace Delphinus
 {
     public interface IPacket
     {
-        MessageID Type { get; }
     }
     public interface IPlayerSlot
     {
@@ -26,7 +25,7 @@ namespace Delphinus
     {
         short ProjSlot { get; set; }
     }
-    public interface NetModulesPacket : IPacket
+    public interface NetModules : IPacket
     {
         NetModuleType ModuleType { get; }
     }

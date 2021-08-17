@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class ItemOwnerPacket : IPacket, IItemSlot, IOtherPlayerSlot
+    internal class ItemOwner : IPacket, IItemSlot, IOtherPlayerSlot
     {
-        public MessageID Type => MessageID.ItemOwner;
         public short ItemSlot { get; set; }
         public byte OtherPlayerSlot { get; set; }
     }

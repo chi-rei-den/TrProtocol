@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class AchievementMessageNPCKilledPacket : IPacket
+    internal class AchievementMessageNPCKilled : IPacket
     {
-        public MessageID Type => MessageID.AchievementMessageNPCKilled;
         public short NPCType { get; set; }
     }
 }

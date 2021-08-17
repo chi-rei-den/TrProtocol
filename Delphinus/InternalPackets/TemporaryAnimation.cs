@@ -1,8 +1,7 @@
 ﻿namespace Delphinus.InternalPackets
 {
-    internal class TemporaryAnimationPacket : IPacket
+    internal class TemporaryAnimation : IPacket
     {
-        public MessageID Type => MessageID.TemporaryAnimation;
         public short AniType { get; set; }
         public short TileType { get; set; }
         public short PosX { get; set; }
