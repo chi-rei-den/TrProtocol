@@ -10,7 +10,6 @@
 
         [Condition("{{packet}}.UniqueImmune == 1")] public int Time { get; set; }
         [Condition("{{packet}}.UniqueImmune == 1")] public byte OtherPlayerSlot { get; set; }
-        // TODO: Doc this
-        public byte HighBitOfPlayerIsAlwaysZero { get; set; } = 0;
+        private byte HighBitOfPlayerIsAlwaysZero { get; set; } = 0;
     }
 }
