@@ -2,6 +2,7 @@
 
 namespace Delphinus.InternalPackets
 {
+    //TODO
     internal class SyncPlayerPacket : IPacket, IPlayerSlot
     {
         public MessageID Type => MessageID.SyncPlayer;

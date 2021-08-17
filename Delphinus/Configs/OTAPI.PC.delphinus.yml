@@ -12,6 +12,7 @@ CustomSerializers:
   PlayerDeathReason: Serializers.Serialize(writer, value)
   PlayerSpawnContext: Serializers.Serialize(writer, value)
   NetModuleType: Serializers.Serialize(writer, value)
+  TileEntity: Serializers.Serialize(writer, value)
   MessageID: Serializers.Serialize(writer, value)
 CustomDeserializers:
   byte[]: Serializers.DeserializeBytes(reader, {{args0}})
@@ -26,6 +27,7 @@ CustomDeserializers:
   PlayerDeathReason: Serializers.DeserializePlayerDeathReason(reader)
   PlayerSpawnContext: Serializers.DeserializePlayerSpawnContext(reader)
   NetModuleType: Serializers.DeserializeNetModuleType(reader)
+  TileEntity: Serializers.DeserializeTileEntity(reader)
   MessageID: Serializers.DeserializeMessageID(reader)
 UsingStatements:
   - using System.IO;

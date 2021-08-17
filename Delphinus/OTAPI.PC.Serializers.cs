@@ -52,6 +52,10 @@ namespace Delphinus
             => writer.Write((byte)data);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void Serialize(BinaryWriter writer, TileEntity data)
+            => data.WriteInner(writer, true);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Serialize(BinaryWriter writer, short[] data)
         {
             for (int i = 0; i < data.Length; i++)
@@ -142,6 +146,10 @@ namespace Delphinus
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static NetModuleType DeserializeNetModuleType(BinaryReader reader)
             => (NetModuleType)reader.ReadByte();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static TileEntity DeserializeTileEntity(BinaryReader reader)
+            => TileEntity.Read(reader, true);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static MessageID DeserializeMessageID(BinaryReader reader)
