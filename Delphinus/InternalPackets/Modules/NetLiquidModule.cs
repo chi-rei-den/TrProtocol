@@ -1,6 +1,6 @@
 ﻿namespace Delphinus.InternalPackets.Modules
 {
-    internal class NetLiquidModule : NetModulesPacket
+    internal class NetLiquidModule : IPacket
     {
         public MessageID Type => MessageID.NetModules;
         public NetModuleType ModuleType => NetModuleType.NetLiquidModule;

@@ -1,6 +1,6 @@
 ﻿namespace Delphinus.InternalPackets.Modules
 {
-    internal class NetCreativeUnlocksPlayerReportModule : NetModulesPacket
+    internal class NetCreativeUnlocksPlayerReportModule : IPacket
     {
         public MessageID Type => MessageID.NetModules;
         public NetModuleType ModuleType => NetModuleType.NetCreativeUnlocksPlayerReportModule;

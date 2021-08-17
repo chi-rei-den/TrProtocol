@@ -2,7 +2,7 @@
 
 namespace Delphinus.InternalPackets.Modules
 {
-    internal class NetCreativePowersModule : NetModulesPacket
+    internal class NetCreativePowersModule : IPacket
     {
         public MessageID Type => MessageID.NetModules;
         public NetModuleType ModuleType => NetModuleType.NetCreativePowersModule;

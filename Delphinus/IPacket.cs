@@ -25,8 +25,4 @@ namespace Delphinus
     {
         short ProjSlot { get; set; }
     }
-    public interface NetModules : IPacket
-    {
-        NetModuleType ModuleType { get; }
-    }
 }

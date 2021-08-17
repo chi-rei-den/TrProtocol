@@ -2,7 +2,7 @@
 
 namespace Delphinus.InternalPackets.Modules
 {
-    internal class NetPingModule : NetModulesPacket
+    internal class NetPingModule : IPacket
     {
         public MessageID Type => MessageID.NetModules;
         public NetModuleType ModuleType => NetModuleType.NetPingModule;

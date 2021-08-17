@@ -3,7 +3,7 @@
 namespace Delphinus.InternalPackets.Modules
 {
     [S2COnly]
-    internal class NetTextModuleS2C : NetModulesPacket, IPlayerSlot
+    internal class NetTextModuleS2C : IPacket, IPlayerSlot
     {
         public MessageID Type => MessageID.NetModules;
         public NetModuleType ModuleType => NetModuleType.NetTextModule;

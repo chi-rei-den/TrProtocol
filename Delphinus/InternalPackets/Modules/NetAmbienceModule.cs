@@ -2,7 +2,7 @@
 
 namespace Delphinus.InternalPackets.Modules
 {
-    internal class NetAmbienceModule : NetModulesPacket, IPlayerSlot
+    internal class NetAmbienceModule : IPacket, IPlayerSlot
     {
         public MessageID Type => MessageID.NetModules;
         public NetModuleType ModuleType => NetModuleType.NetAmbienceModule;

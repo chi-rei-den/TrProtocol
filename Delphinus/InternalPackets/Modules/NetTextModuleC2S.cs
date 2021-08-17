@@ -3,7 +3,7 @@
 namespace Delphinus.InternalPackets.Modules
 {
     [C2SOnly]
-    internal class NetTextModuleC2S : NetModulesPacket
+    internal class NetTextModuleC2S : IPacket
     {
         public MessageID Type => MessageID.NetModules;
         public NetModuleType ModuleType => NetModuleType.NetTextModule;
