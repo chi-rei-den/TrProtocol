@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Scriban;
 
@@ -285,13 +286,21 @@ namespace Delphinus.Generator
                 var args = attr?.ArgumentList;
                 if (args != null && args.Arguments.Count > 1)
                 {
-                    if (args.Arguments[1].ToString() == (isSerialize ? "Usage.Deserialize" : "Usage.Serialize"))
+                    var arg2 = args.Arguments[1];
+                    if (arg2.Expression.Kind() != SyntaxKind.SimpleMemberAccessExpression)
+                    {
+                        return isSerialize
+                            ? GetAttributeArgValueString(args.Arguments[0], context)
+                            : GetAttributeArgValueString(args.Arguments[1], context);
+                    }
+                    else if (arg2.ToString() == (isSerialize ? "Usage.Deserialize" : "Usage.Serialize"))
                     {
                         return null;
                     }
-                    return isSerialize
-                        ? GetAttributeArgValueString(args.Arguments[0], context)
-                        : GetAttributeArgValueString(args.Arguments[1], context);
+                    else
+                    {
+                        return GetAttributeArgValueString(args.Arguments.First(), context);
+                    }
                 }
                 else if (args != null && args.Arguments.Count > 0)
                 {
