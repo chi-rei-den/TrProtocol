@@ -16,6 +16,14 @@ using static Terraria.GameContent.NetModules.NetBestiaryModule;
 
 namespace Delphinus
 {
+    public struct NetLiquidData
+    {
+        public ushort PosX { get; set; }
+        public ushort PosY { get; set; }
+        public byte Liquid { get; set; }
+        public byte LiquidType { get; set; }
+    }
+
     public static class Serializers
     {
 
@@ -139,14 +147,14 @@ namespace Delphinus
             }
         }
 
-        internal static void Serialize(BinaryWriter writer, (ushort, ushort, byte, byte)[] data)
+        internal static void Serialize(BinaryWriter writer, NetLiquidData[] data)
         {
             for (int i = 0; i < data.Length; i++)
             {
-                writer.Write(data[i].Item1);
-                writer.Write(data[i].Item2);
-                writer.Write(data[i].Item3);
-                writer.Write(data[i].Item4);
+                writer.Write(data[i].PosX);
+                writer.Write(data[i].PosY);
+                writer.Write(data[i].Liquid);
+                writer.Write(data[i].LiquidType);
             }
         }
 
@@ -182,15 +190,15 @@ namespace Delphinus
             }
             return array;
         }
-        internal static (ushort, ushort, byte, byte)[] DeserializeNetLiquidData(BinaryReader reader, int count)
+        internal static NetLiquidData[] DeserializeNetLiquidData(BinaryReader reader, int count)
         {
-            var array = new (ushort, ushort, byte, byte)[count];
+            var array = new NetLiquidData[count];
             for (int i = 0; i < count; i++)
             {
-                array[i].Item1 = reader.ReadUInt16();
-                array[i].Item2 = reader.ReadUInt16();
-                array[i].Item3 = reader.ReadByte();
-                array[i].Item4 = reader.ReadByte();
+                array[i].PosX = reader.ReadUInt16();
+                array[i].PosY = reader.ReadUInt16();
+                array[i].Liquid = reader.ReadByte();
+                array[i].LiquidType = reader.ReadByte();
             }
             return array;
         }

@@ -17,4 +17,5 @@
     internal interface ICreativePower { }
     internal enum PacketTypes { }
     internal enum NetModuleTypes { }
+    internal struct NetLiquidData { }
 }
