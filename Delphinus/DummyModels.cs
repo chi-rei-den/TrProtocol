@@ -9,6 +9,12 @@
     internal class PlayerDeathReason { }
     internal enum MultiToolMode { }
     internal enum SkyEntityType { }
+    internal enum SubPacketType { }
     internal enum TeleportPylonType { }
-    internal enum CreativePowerTypes { }
+    internal enum BestiaryUnlockType { }
+    internal enum ParticleOrchestraType { }
+    internal struct ParticleOrchestraSettings { }
+    internal interface ICreativePower { }
+    internal enum PacketTypes { }
+    internal enum NetModuleTypes { }
 }

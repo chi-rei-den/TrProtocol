@@ -2,9 +2,8 @@
 {
     internal class NetLiquidModule : IPacket
     {
-        public MessageID Type => MessageID.NetModules;
-        public NetModuleType ModuleType => NetModuleType.NetLiquidModule;
         public ushort Count { get; set; }
-        public byte[] Changes { get; set; }
+        [Arguments("{{packet}}.Count")]
+        public (ushort, ushort, byte, byte)[] Data { get; set; }
     }
 }

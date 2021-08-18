@@ -4,8 +4,15 @@ using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.Ambience;
+using Terraria.GameContent.Creative;
+using Terraria.GameContent.Drawing;
+using Terraria.GameContent.NetModules;
 using Terraria.GameContent.UI;
 using Terraria.Localization;
+using static Terraria.GameContent.NetModules.NetTeleportPylonModule;
+using static Terraria.GameContent.NetModules.NetBestiaryModule;
 
 namespace Delphinus
 {
@@ -18,10 +25,6 @@ namespace Delphinus
             writer.Write(data.X);
             writer.Write(data.Y);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void Serialize(BinaryWriter writer, MessageID data)
-            => writer.Write((byte)data);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Serialize(BinaryWriter writer, Color data)
@@ -48,8 +51,62 @@ namespace Delphinus
             => writer.Write((byte)data);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void Serialize(BinaryWriter writer, NetModuleType data)
+        internal static void Serialize(BinaryWriter writer, SkyEntityType data)
             => writer.Write((byte)data);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void Serialize(BinaryWriter writer, SubPacketType data)
+            => writer.Write((byte)data);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void Serialize(BinaryWriter writer, TeleportPylonType data)
+            => writer.Write((byte)data);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void Serialize(BinaryWriter writer, BestiaryUnlockType data)
+            => writer.Write((byte)data);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void Serialize(BinaryWriter writer, ParticleOrchestraType data)
+            => writer.Write((byte)data);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void Serialize(BinaryWriter writer, ParticleOrchestraSettings data)
+            => data.Serialize(writer);
+
+        internal static void Serialize(BinaryWriter writer, ICreativePower data, byte playerSlot)
+        {
+            switch (data)
+            {
+            case CreativePowers.DifficultySliderPower p:
+                p.Save(writer);
+                break;
+             case CreativePowers.FarPlacementRangePower p:
+                p.Save(Main.player[playerSlot], writer);
+                break;
+             case CreativePowers.FreezeRainPower p:
+                p.Save(writer);
+                break;
+             case CreativePowers.FreezeTime p:
+                p.Save(writer);
+                break;
+             case CreativePowers.FreezeWindDirectionAndStrength p:
+                p.Save(writer);
+                break;
+            case CreativePowers.GodmodePower p:
+                p.Save(Main.player[playerSlot], writer);
+                break;
+            case CreativePowers.ModifyTimeRate p:
+                p.Save(writer);
+                break;
+            case CreativePowers.SpawnRateSliderPerPlayerPower p:
+                p.Save(Main.player[playerSlot], writer);
+                break;
+            case CreativePowers.StopBiomeSpreadPower p:
+                p.Save(writer);
+                break;
+            }
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Serialize(BinaryWriter writer, TileEntity data)
@@ -79,6 +136,17 @@ namespace Delphinus
             for (int i = 0; i < data.Length; i++)
             {
                 writer.Write(data[i]);
+            }
+        }
+
+        internal static void Serialize(BinaryWriter writer, (ushort, ushort, byte, byte)[] data)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                writer.Write(data[i].Item1);
+                writer.Write(data[i].Item2);
+                writer.Write(data[i].Item3);
+                writer.Write(data[i].Item4);
             }
         }
 
@@ -114,6 +182,18 @@ namespace Delphinus
             }
             return array;
         }
+        internal static (ushort, ushort, byte, byte)[] DeserializeNetLiquidData(BinaryReader reader, int count)
+        {
+            var array = new (ushort, ushort, byte, byte)[count];
+            for (int i = 0; i < count; i++)
+            {
+                array[i].Item1 = reader.ReadUInt16();
+                array[i].Item2 = reader.ReadUInt16();
+                array[i].Item3 = reader.ReadByte();
+                array[i].Item4 = reader.ReadByte();
+            }
+            return array;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static Vector2 DeserializeVector2(BinaryReader reader)
@@ -144,15 +224,47 @@ namespace Delphinus
             => (PlayerSpawnContext)reader.ReadByte();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static NetModuleType DeserializeNetModuleType(BinaryReader reader)
-            => (NetModuleType)reader.ReadByte();
+        internal static SkyEntityType DeserializeSkyEntityType(BinaryReader reader)
+            => (SkyEntityType)reader.ReadByte();
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static NetTeleportPylonModule.SubPacketType DeserializeSubPacketType(BinaryReader reader)
+            => (NetTeleportPylonModule.SubPacketType)reader.ReadByte();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static TeleportPylonType DeserializeTeleportPylonType(BinaryReader reader)
+            => (TeleportPylonType)reader.ReadByte();
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+
+        internal static NetBestiaryModule.BestiaryUnlockType DeserializeBestiaryUnlockType(BinaryReader reader)
+            => (NetBestiaryModule.BestiaryUnlockType)reader.ReadByte();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ParticleOrchestraType DeserializeParticleOrchestraType(BinaryReader reader)
+            => (ParticleOrchestraType)reader.ReadByte();
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ParticleOrchestraSettings DeserializeParticleOrchestraSettings(BinaryReader reader)
+        {
+            var settings = new ParticleOrchestraSettings();
+            settings.DeserializeFrom(reader);
+            return settings;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static ICreativePower DeserializeCreativePowers(BinaryReader reader, byte playerSlot)
+        {
+            ushort id = reader.ReadUInt16();
+            if (!CreativePowerManager.Instance.TryGetPower(id, out var creativePower))
+            {
+                return null;
+            }
+            creativePower.DeserializeNetMessage(reader, playerSlot);
+            return creativePower;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static TileEntity DeserializeTileEntity(BinaryReader reader)
             => TileEntity.Read(reader, true);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static MessageID DeserializeMessageID(BinaryReader reader)
-            => (MessageID)reader.ReadByte();
     }
 }

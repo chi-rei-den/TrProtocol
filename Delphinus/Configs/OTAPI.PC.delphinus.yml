@@ -1,9 +1,11 @@
 ﻿---
 Namespace: Delphinus.OTAPI
+
 CustomSerializers:
   ushort[]: Serializers.Serialize(writer, value)
   short[]: Serializers.Serialize(writer, value)
   float[]: Serializers.Serialize(writer, value)
+  (ushort, ushort, byte, byte)[]: Serializers.Serialize(writer, value)
   Vector2: Serializers.Serialize(writer, value)
   Color: Serializers.Serialize(writer, value)
   BitsByte: Serializers.Serialize(writer, value)
@@ -11,14 +13,20 @@ CustomSerializers:
   NetworkText: Serializers.Serialize(writer, value)
   PlayerDeathReason: Serializers.Serialize(writer, value)
   PlayerSpawnContext: Serializers.Serialize(writer, value)
-  NetModuleType: Serializers.Serialize(writer, value)
+  SkyEntityType: Serializers.Serialize(writer, value)
+  SubPacketType: Serializers.Serialize(writer, value)
+  TeleportPylonType: Serializers.Serialize(writer, value)
+  BestiaryUnlockType: Serializers.Serialize(writer, value)
+  ParticleOrchestraType: Serializers.Serialize(writer, value)
+  ParticleOrchestraSettings: Serializers.Serialize(writer, value)
   TileEntity: Serializers.Serialize(writer, value)
-  MessageID: Serializers.Serialize(writer, value)
+
 CustomDeserializers:
   byte[]: Serializers.DeserializeBytes(reader, {{args0}})
   ushort[]: Serializers.DeserializeUInt16Array(reader, {{args0}})
   short[]: Serializers.DeserializeInt16Array(reader, {{args0}})
   float[]: Serializers.DeserializeSingleArray(reader, {{args0}})
+  (ushort, ushort, byte, byte)[]: Serializers.DeserializeNetLiquidData(reader, {{args0}})
   Vector2: Serializers.DeserializeVector2(reader)
   Color: Serializers.DeserializeColor(reader)
   BitsByte: Serializers.DeserializeBitsByte(reader)
@@ -26,16 +34,35 @@ CustomDeserializers:
   NetworkText: Serializers.DeserializeNetworkText(reader)
   PlayerDeathReason: Serializers.DeserializePlayerDeathReason(reader)
   PlayerSpawnContext: Serializers.DeserializePlayerSpawnContext(reader)
-  NetModuleType: Serializers.DeserializeNetModuleType(reader)
+  SkyEntityType: Serializers.DeserializeSkyEntityType(reader)
+  SubPacketType: Serializers.DeserializeSubPacketType(reader)
+  TeleportPylonType: Serializers.DeserializeTeleportPylonType(reader)
+  BestiaryUnlockType: Serializers.DeserializeBestiaryUnlockType(reader)
+  ParticleOrchestraType: Serializers.DeserializeParticleOrchestraType(reader)
+  ParticleOrchestraSettings: Serializers.DeserializeParticleOrchestraSettings(reader)
   TileEntity: Serializers.DeserializeTileEntity(reader)
-  MessageID: Serializers.DeserializeMessageID(reader)
+
+NetModuleSerializers:
+  ICreativePower: Serializers.Serialize(writer, value, playerSlot)
+
+NetModuleDeserializers:
+  ICreativePower: Serializers.DeserializeCreativePowers(reader, playerSlot)
+
 UsingStatements:
   - using System.IO;
   - using Microsoft.Xna.Framework;
   - using Terraria;
   - using Terraria.Localization;
   - using Terraria.DataStructures;
+  - using Terraria.GameContent;
+  - using Terraria.GameContent.Ambience;
+  - using Terraria.GameContent.Creative;
+  - using Terraria.GameContent.UI;
+  - using Terraria.GameContent.Drawing;
   - using static Terraria.GameContent.UI.WiresUI.Settings;
+  - using static Terraria.GameContent.NetModules.NetTeleportPylonModule;
+  - using static Terraria.GameContent.NetModules.NetBestiaryModule;
+
 Packets:
   ClientHello: 1
   Kick: 2
@@ -103,7 +130,6 @@ Packets:
   PaintWall: 64
   Teleport: 65
   SpiritHeal: 66
-  Unused67: 67
   ClientUUID: 68
   ChestName: 69
   BugCatching: 70
@@ -118,7 +144,6 @@ Packets:
   PlaceObject: 79
   SyncPlayerChestIndex: 80
   CombatTextInt: 81
-  NetModules: 82
   NPCKillCountDeathTally: 83
   PlayerStealth: 84
   QuickStackChests: 85
@@ -130,7 +155,6 @@ Packets:
   SyncEmoteBubble: 91
   SyncExtraValue: 92
   SocialHandshake: 93
-  Unused94: 94
   MurderSomeoneElsesProjectile: 95
   TeleportPlayerThroughPortal: 96
   AchievementMessageNPCKilled: 97
@@ -177,3 +201,18 @@ Packets:
   ClientSyncedInventory: 138
   SetCountsAsHostForGameplay: 139
   SetMiscEventValues: 140
+
+NetModulePacketID: 82
+
+NetModules:
+  NetLiquidModule: 0
+  NetTextModule: 1
+  NetPingModule: 2
+  NetAmbienceModule: 3
+  NetBestiaryModule: 4
+  NetCreativeUnlocksModule: 5
+  NetCreativePowersModule: 6
+  NetCreativeUnlocksPlayerReportModule: 7
+  NetTeleportPylonModule: 8
+  NetParticlesModule: 9
+  NetCreativePowerPermissionsModule: 10

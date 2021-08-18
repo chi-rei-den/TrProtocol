@@ -2,21 +2,22 @@
 {{ $u }}
 {{~ end ~}}
 
-namespace {{ namespace }}.Packets {
-    public {{ type_kind }} {{ packet_type_name }}Packet {{- base_type ?! ' : ' + base_type }} {
-        public readonly byte Type = {{ packet_id }};
+namespace {{ namespace }}.NetModules {
+    public {{ type_kind }} {{ packet_type_name }} {{- base_type ?! ' : ' + base_type }} {
+        public readonly byte PacketType = {{ packet_id }};
+        public readonly ushort NetModuleType = {{ net_module_id }};
 
     {{~ for $member in members ~}}
         {{ $member | string.replace '\n' '\n    ' }}
     {{~ end ~}}
 
-        public void Deserialize({{ reader_type }} reader) {
+        public void Deserialize({{ reader_type }} reader, byte playerSlot) {
         {{~ for $stmt in deserialize_statements ~}}
             {{ $stmt | string.replace '\n' '\n            ' }}
         {{~ end ~}}
         }
 
-        public void Serialize({{ writer_type }} writer) {
+        public void Serialize({{ writer_type }} writer, byte playerSlot) {
         {{~ for $stmt in serialize_statements ~}}
             {{ $stmt | string.replace '\n' '\n            ' }}
         {{~ end ~}}

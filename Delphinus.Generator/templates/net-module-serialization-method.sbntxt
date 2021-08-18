@@ -1,15 +1,15 @@
 ﻿{{~
-    full_packet_type_name = namespace + '.Packets.' + packet_type_name + 'Packet'
+    full_packet_type_name = namespace + '.NetModules.' + packet_type_name
 ~}}
 
-public static void Serialize(this {{ full_packet_type_name }} packet,  {{ writer_type }} writer) {
+public static void Serialize(this {{ full_packet_type_name }} packet,  {{ writer_type }} writer, byte playerSlot) {
 {{~ for $stmt in serialize_statements ~}}
     {{ $stmt | string.replace '\n' '\n    ' }}
 {{~ end ~}}
 }
 
 public static {{ full_packet_type_name }} Deserialize<T>(
-    this {{ reader_type }} reader,  {{ full_packet_type_name }} packet = null)
+    this {{ reader_type }} reader, byte playerSlot, {{ full_packet_type_name }} packet = null)
     where T : {{ full_packet_type_name }} {
     packet = new {{ full_packet_type_name }}();
 {{~ for $stmt in deserialize_statements ~}}

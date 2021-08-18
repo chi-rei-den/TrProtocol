@@ -14,8 +14,10 @@ namespace Delphinus.Generator
     public class SerializationGenerator : ISourceGenerator
     {
         private Template _packetTypeTemplate;
+        private Template _netModuleTemplate;
         private Template _serializationClassTemplate;
         private Template _serializationMethodTemplate;
+        private Template _netModuleSerializationMethodTemplate;
         private Template _serializeStatementTemplate;
         private Template _deserializeStatementTemplate;
 
@@ -32,8 +34,10 @@ namespace Delphinus.Generator
             if (receiver == null) throw new ArgumentNullException(nameof(receiver));
 
             _packetTypeTemplate = Utils.LoadTemplate(context, "packet-type");
+            _netModuleTemplate = Utils.LoadTemplate(context, "net-module");
             _serializationClassTemplate = Utils.LoadTemplate(context, "serialization-class");
             _serializationMethodTemplate = Utils.LoadTemplate(context, "serialization-method");
+            _netModuleSerializationMethodTemplate = Utils.LoadTemplate(context, "net-module-serialization-method");
             _serializeStatementTemplate = Utils.LoadTemplate(context, "serialize-statement");
             _deserializeStatementTemplate = Utils.LoadTemplate(context, "deserialize-statement");
 
@@ -63,6 +67,13 @@ namespace Delphinus.Generator
         {
             foreach (var packetType in receiver.PacketTypes)
             {
+                var typeName = packetType.Identifier.Text;
+
+                byte packetID = 0;
+                bool isNetModule = config.NetModules.TryGetValue(typeName, out var netModuleID);
+                if (!isNetModule && !config.Packets.TryGetValue(typeName, out packetID))
+                    continue;
+
                 var templateCtx = new TemplateContext();
 
                 templateCtx.SetVar("using_statements", config.UsingStatements);
@@ -74,6 +85,8 @@ namespace Delphinus.Generator
                 templateCtx.SetVar("packet", "this");
                 templateCtx.SetVar("packet_type_name", packetType.Identifier.Text);
                 templateCtx.SetVar("members", packetType.Members);
+                templateCtx.SetVar("packet_id", isNetModule ? config.NetModulePacketID : packetID);
+                templateCtx.SetVar("net_module_id", netModuleID);
 
                 var serializeStatements = new List<string>();
                 var deserializeStatements = new List<string>();
@@ -86,9 +99,11 @@ namespace Delphinus.Generator
                 templateCtx.SetVar("serialize_statements", serializeStatements);
                 templateCtx.SetVar("deserialize_statements", deserializeStatements);
 
-                var result = _packetTypeTemplate.Render(templateCtx);
+                var result = isNetModule
+                    ? _netModuleTemplate.Render(templateCtx)
+                    : _packetTypeTemplate.Render(templateCtx);
 
-                context.AddSource($"{packetType.Identifier.Text}", result);
+                context.AddSource($"{packetType.Identifier.Text}Packet", result);
             }
         }
 
@@ -110,9 +125,17 @@ namespace Delphinus.Generator
             var methodTuples = new List<string>();
             foreach (var packetType in receiver.PacketTypes)
             {
+                var typeName = packetType.Identifier.Text;
+
+                bool isNetModule = config.NetModules.TryGetValue(typeName, out var netModuleID);
+
+                if (!isNetModule && !config.Packets.TryGetValue(typeName, out var packetID))
+                    continue;
+
                 var subCtx = new TemplateContext(templateCtx.BuiltinObject);
                 subCtx.SetVar("packet_type_name", packetType.Identifier.Text);
                 subCtx.SetVar("members", packetType.Members);
+                templateCtx.SetVar("net_module_id", netModuleID);
 
                 var serializeStatements = new List<string>();
                 var deserializeStatements = new List<string>();
@@ -126,7 +149,9 @@ namespace Delphinus.Generator
                 subCtx.SetVar("serialize_statements", serializeStatements);
                 subCtx.SetVar("deserialize_statements", deserializeStatements);
 
-                methodTuples.Add(_serializationMethodTemplate.Render(templateCtx));
+                methodTuples.Add(isNetModule
+                    ? _netModuleSerializationMethodTemplate.Render(templateCtx)
+                    : _serializationMethodTemplate.Render(templateCtx));
             }
 
             templateCtx.SetVar("method_tuples", methodTuples);
@@ -164,7 +189,9 @@ namespace Delphinus.Generator
             string getSerializer(string typeName)
             {
                 string serializer = null;
-                if (config.CustomSerializers?.TryGetValue(typeName, out serializer) == true)
+                if (config.NetModuleSerializers?.TryGetValue(typeName, out serializer) == true)
+                    return Template.Parse(serializer).Render(context);
+                else if (config.CustomSerializers?.TryGetValue(typeName, out serializer) == true)
                     return Template.Parse(serializer).Render(context);
                 else if (_defaultSerializer.TryGetValue(typeName, out serializer))
                     return Template.Parse(serializer).Render(context);
@@ -213,7 +240,10 @@ namespace Delphinus.Generator
             string getDeserializer(string typeName)
             {
                 string deserializer = null;
-                if (config.CustomDeserializers?.TryGetValue(typeName, out deserializer) == true)
+
+                if (config.NetModuleDeserializers?.TryGetValue(typeName, out deserializer) == true)
+                    return Template.Parse(deserializer).Render(context);
+                else if (config.CustomDeserializers?.TryGetValue(typeName, out deserializer) == true)
                     return Template.Parse(deserializer).Render(context);
                 else if (_defaultDserializer.TryGetValue(typeName, out deserializer))
                     return Template.Parse(deserializer).Render(context);

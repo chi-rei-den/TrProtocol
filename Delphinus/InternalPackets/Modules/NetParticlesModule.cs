@@ -1,8 +1,10 @@
-﻿namespace Delphinus.InternalPackets.Modules
+﻿using Delphinus.InternalModels;
+
+namespace Delphinus.InternalPackets.Modules
 {
     internal class NetParticlesModule : IPacket
     {
-        public MessageID Type => MessageID.NetModules;
-        public NetModuleType ModuleType => NetModuleType.NetParticlesModule;
+        public ParticleOrchestraType Type { get; set; }
+        public ParticleOrchestraSettings Settings { get; set; }
     }
 }

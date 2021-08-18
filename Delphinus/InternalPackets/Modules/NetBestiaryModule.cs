@@ -1,9 +1,12 @@
-﻿namespace Delphinus.InternalPackets.Modules
+﻿using Delphinus.InternalModels;
+
+namespace Delphinus.InternalPackets.Modules
 {
     internal class NetBestiaryModule : IPacket
     {
-        public MessageID Type => MessageID.NetModules;
-        public NetModuleType ModuleType => NetModuleType.NetBestiaryModule;
-        public byte[] Extra { get; set; }
+        public BestiaryUnlockType Type { get; set; }
+        public short NPCNetID { get; set; }
+        [Condition("(byte){{packet}}.Type == 0")]
+        public ushort KillCount { get; set; }
     }
 }
