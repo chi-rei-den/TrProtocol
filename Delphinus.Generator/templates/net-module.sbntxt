@@ -4,8 +4,8 @@
 
 namespace {{ namespace }}.NetModules {
     public {{ type_kind }} {{ packet_type_name }} {{- base_type ?! ' : ' + base_type }} {
-        public readonly byte PacketType = {{ packet_id }};
-        public readonly ushort NetModuleType = {{ net_module_id }};
+        public readonly byte MessageID = {{ packet_id }};
+        public readonly ushort NetModuleID = {{ net_module_id }};
 
     {{~ for $member in members ~}}
         {{ $member | string.replace '\n' '\n    ' }}

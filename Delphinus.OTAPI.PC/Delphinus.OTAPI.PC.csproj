@@ -437,8 +437,29 @@
       <Compile Include="..\Delphinus\GeneratedFiles\OTAPI\Delphinus.Generator\Delphinus.Generator.SerializationGenerator\WorldDataPacket.cs">
         <Link>Delphinus.Generator.SerializationGenerator\WorldDataPacket.cs</Link>
       </Compile>
-      <Compile Include="..\Delphinus\OTAPI.PC.Serializers.cs">
-        <Link>OTAPI.PC.Serializers.cs</Link>
+      <Compile Include="..\Delphinus\OTAPI\ChestData.cs">
+        <Link>OTAPI\ChestData.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\OTAPI\ComplexTileData.cs">
+        <Link>OTAPI\ComplexTileData.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\OTAPI\Deserializers.cs">
+        <Link>OTAPI\Deserializers.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\OTAPI\NetLiquidData.cs">
+        <Link>OTAPI\NetLiquidData.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\OTAPI\SectionData.cs">
+        <Link>OTAPI\SectionData.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\OTAPI\Serializers.cs">
+        <Link>OTAPI\Serializers.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\OTAPI\SignData.cs">
+        <Link>OTAPI\SignData.cs</Link>
+      </Compile>
+      <Compile Include="..\Delphinus\OTAPI\SimpleTileData.cs">
+        <Link>OTAPI\SimpleTileData.cs</Link>
       </Compile>
     </ItemGroup>
 

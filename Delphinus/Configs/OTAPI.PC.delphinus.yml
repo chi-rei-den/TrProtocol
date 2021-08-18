@@ -6,10 +6,13 @@ CustomSerializers:
   short[]: Serializers.Serialize(writer, value)
   float[]: Serializers.Serialize(writer, value)
   NetLiquidData[]: Serializers.Serialize(writer, value)
+  SimpleTileData[,]: Serializers.Serialize(writer, value)
+  SectionData: Serializers.Serialize(writer, value, {{args0}})
   Vector2: Serializers.Serialize(writer, value)
   Color: Serializers.Serialize(writer, value)
   BitsByte: Serializers.Serialize(writer, value)
   MultiToolMode: Serializers.Serialize(writer, value)
+  TileChangeType: Serializers.Serialize(writer, value)
   NetworkText: Serializers.Serialize(writer, value)
   PlayerDeathReason: Serializers.Serialize(writer, value)
   PlayerSpawnContext: Serializers.Serialize(writer, value)
@@ -22,31 +25,34 @@ CustomSerializers:
   TileEntity: Serializers.Serialize(writer, value)
 
 CustomDeserializers:
-  byte[]: Serializers.DeserializeBytes(reader, {{args0}})
-  ushort[]: Serializers.DeserializeUInt16Array(reader, {{args0}})
-  short[]: Serializers.DeserializeInt16Array(reader, {{args0}})
-  float[]: Serializers.DeserializeSingleArray(reader, {{args0}})
-  NetLiquidData[]: Serializers.DeserializeNetLiquidData(reader, {{args0}})
-  Vector2: Serializers.DeserializeVector2(reader)
-  Color: Serializers.DeserializeColor(reader)
-  BitsByte: Serializers.DeserializeBitsByte(reader)
-  MultiToolMode: Serializers.DeserializeMultiToolMode(reader)
-  NetworkText: Serializers.DeserializeNetworkText(reader)
-  PlayerDeathReason: Serializers.DeserializePlayerDeathReason(reader)
-  PlayerSpawnContext: Serializers.DeserializePlayerSpawnContext(reader)
-  SkyEntityType: Serializers.DeserializeSkyEntityType(reader)
-  SubPacketType: Serializers.DeserializeSubPacketType(reader)
-  TeleportPylonType: Serializers.DeserializeTeleportPylonType(reader)
-  BestiaryUnlockType: Serializers.DeserializeBestiaryUnlockType(reader)
-  ParticleOrchestraType: Serializers.DeserializeParticleOrchestraType(reader)
-  ParticleOrchestraSettings: Serializers.DeserializeParticleOrchestraSettings(reader)
-  TileEntity: Serializers.DeserializeTileEntity(reader)
+  byte[]: Deserializers.DeserializeBytes(reader, {{args0}})
+  ushort[]: Deserializers.DeserializeUInt16Array(reader, {{args0}})
+  short[]: Deserializers.DeserializeInt16Array(reader, {{args0}})
+  float[]: Deserializers.DeserializeSingleArray(reader, {{args0}})
+  NetLiquidData[]: Deserializers.DeserializeNetLiquidData(reader, {{args0}})
+  SimpleTileData[,]: Deserializers.DeserializeSimpleTileData(reader, {{args0}}, {{args1}})
+  SectionData: Deserializers.DeserializeSectionData(reader, {{args0}})
+  Vector2: Deserializers.DeserializeVector2(reader)
+  Color: Deserializers.DeserializeColor(reader)
+  BitsByte: Deserializers.DeserializeBitsByte(reader)
+  MultiToolMode: Deserializers.DeserializeMultiToolMode(reader)
+  TileChangeType: Deserializers.DeserializeTileChangeType(reader)
+  NetworkText: Deserializers.DeserializeNetworkText(reader)
+  PlayerDeathReason: Deserializers.DeserializePlayerDeathReason(reader)
+  PlayerSpawnContext: Deserializers.DeserializePlayerSpawnContext(reader)
+  SkyEntityType: Deserializers.DeserializeSkyEntityType(reader)
+  SubPacketType: Deserializers.DeserializeSubPacketType(reader)
+  TeleportPylonType: Deserializers.DeserializeTeleportPylonType(reader)
+  BestiaryUnlockType: Deserializers.DeserializeBestiaryUnlockType(reader)
+  ParticleOrchestraType: Deserializers.DeserializeParticleOrchestraType(reader)
+  ParticleOrchestraSettings: Deserializers.DeserializeParticleOrchestraSettings(reader)
+  TileEntity: Deserializers.DeserializeTileEntity(reader)
 
 NetModuleSerializers:
   ICreativePower: Serializers.Serialize(writer, value, playerSlot)
 
 NetModuleDeserializers:
-  ICreativePower: Serializers.DeserializeCreativePowers(reader, playerSlot)
+  ICreativePower: Deserializers.DeserializeCreativePowers(reader, playerSlot)
 
 UsingStatements:
   - using System.IO;
@@ -59,6 +65,7 @@ UsingStatements:
   - using Terraria.GameContent.Creative;
   - using Terraria.GameContent.UI;
   - using Terraria.GameContent.Drawing;
+  - using Terraria.ID;
   - using static Terraria.GameContent.UI.WiresUI.Settings;
   - using static Terraria.GameContent.NetModules.NetTeleportPylonModule;
   - using static Terraria.GameContent.NetModules.NetBestiaryModule;

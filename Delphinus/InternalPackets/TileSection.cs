@@ -2,7 +2,7 @@
 {
     internal class TileSection : IPacket
     {
-        //TODO
-        // public byte[] Data { get; set; }
+        public bool IsCompressed { get; set; }
+        [Arguments("{{packet}}.IsCompressed")] public SectionData Data { get; set; }
     }
 }

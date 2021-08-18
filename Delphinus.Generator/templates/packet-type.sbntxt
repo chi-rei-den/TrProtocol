@@ -4,7 +4,7 @@
 
 namespace {{ namespace }}.Packets {
     public {{ type_kind }} {{ packet_type_name }}Packet {{- base_type ?! ' : ' + base_type }} {
-        public readonly byte Type = {{ packet_id }};
+        public readonly byte MessageID = {{ packet_id }};
 
     {{~ for $member in members ~}}
         {{ $member | string.replace '\n' '\n    ' }}

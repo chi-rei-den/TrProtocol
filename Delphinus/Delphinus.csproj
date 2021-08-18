@@ -43,7 +43,6 @@
 
       <ItemGroup>
         <PackageReference Include="OTAPI.Upcoming" Version="3.0.20-alpha" />
-        <Compile Include="OTAPI.PC.Serializers.cs" />
         <AdditionalFiles Include="Configs/OTAPI.PC.delphinus.yml" />
       </ItemGroup>
     </When>

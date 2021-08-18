@@ -8,6 +8,7 @@
     internal class PlayerSpawnContext { }
     internal class PlayerDeathReason { }
     internal enum MultiToolMode { }
+    internal enum TileChangeType { }
     internal enum SkyEntityType { }
     internal enum SubPacketType { }
     internal enum TeleportPylonType { }
@@ -18,4 +19,6 @@
     internal enum PacketTypes { }
     internal enum NetModuleTypes { }
     internal struct NetLiquidData { }
+    internal struct SimpleTileData { }
+    internal struct SectionData { }
 }

@@ -1,8 +1,15 @@
-﻿namespace Delphinus.InternalPackets
+﻿using Delphinus.InternalModels;
+
+namespace Delphinus.InternalPackets
 {
     internal class TileSquare : IPacket
     {
-        //TODO
-        // public byte[] Data { get; set; }
+        public short TilePosX { get; set; }
+        public short TilePosY { get; set; }
+        public byte Width { get; set; }
+        public byte Height { get; set; }
+        public TileChangeType Type { get; set; }
+        [Arguments("{{packet}}.Width", "{{packet}}.Height")]
+        public SimpleTileData[,] Tiles { get; set; }
     }
 }

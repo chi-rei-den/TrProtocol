@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -8,25 +9,16 @@ using Terraria.GameContent;
 using Terraria.GameContent.Ambience;
 using Terraria.GameContent.Creative;
 using Terraria.GameContent.Drawing;
-using Terraria.GameContent.NetModules;
 using Terraria.GameContent.UI;
+using Terraria.ID;
 using Terraria.Localization;
 using static Terraria.GameContent.NetModules.NetTeleportPylonModule;
 using static Terraria.GameContent.NetModules.NetBestiaryModule;
 
 namespace Delphinus
 {
-    public struct NetLiquidData
+    internal static class Serializers
     {
-        public ushort PosX { get; set; }
-        public ushort PosY { get; set; }
-        public byte Liquid { get; set; }
-        public byte LiquidType { get; set; }
-    }
-
-    public static class Serializers
-    {
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Serialize(BinaryWriter writer, Vector2 data)
         {
@@ -44,6 +36,10 @@ namespace Delphinus
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Serialize(BinaryWriter writer, WiresUI.Settings.MultiToolMode data)
+
+            => writer.Write((byte)data);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void Serialize(BinaryWriter writer, TileChangeType data)
             => writer.Write((byte)data);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -118,7 +114,7 @@ namespace Delphinus
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Serialize(BinaryWriter writer, TileEntity data)
-            => data.WriteInner(writer, true);
+            => TileEntity.Write(writer, data, true);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Serialize(BinaryWriter writer, short[] data)
@@ -158,121 +154,160 @@ namespace Delphinus
             }
         }
 
-        internal static byte[] DeserializeBytes(BinaryReader reader, int count)
-            => reader.ReadBytes(count);
-
-        internal static ushort[] DeserializeUInt16Array(BinaryReader reader, int count)
+        internal static void Serialize(BinaryWriter writer, SimpleTileData[,] data)
         {
-            var array = new ushort[count];
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < data.GetLength(0); i++)
             {
-                array[i] = reader.ReadUInt16();
+                for (int j = 0; j < data.GetLength(1); j++)
+                {
+                    var tile = data[i, j];
+                    var flags1 = tile.Flags1;
+                    var flags2 = tile.Flags2;
+                    writer.Write(flags1);
+                    writer.Write(flags2);
+
+                    if (flags2[2])
+                    {
+                        writer.Write(tile.TileColor);
+                    }
+                    if (flags2[3])
+                    {
+                        writer.Write(tile.WallColor);
+                    }
+                    if (flags1[0])
+                    {
+                        writer.Write(tile.TileType);
+                        if (Main.tileFrameImportant[(int)tile.TileType])
+                        {
+                            writer.Write(tile.FrameX);
+                            writer.Write(tile.FrameY);
+                        }
+                    }
+                    if (flags1[2])
+                    {
+                        writer.Write(tile.WallType);
+                    }
+                    if (flags1[3])
+                    {
+                        writer.Write(tile.Liquid);
+                        writer.Write(tile.LiquidType);
+                    }
+                }
             }
-            return array;
         }
 
-        internal static short[] DeserializeInt16Array(BinaryReader reader, int count)
+        internal static void Serialize(BinaryWriter writer, SectionData data, bool isCompressed)
         {
-            var array = new short[count];
-            for (int i = 0; i < count; i++)
+            if (isCompressed)
             {
-                array[i] = reader.ReadInt16();
+                using (var ds = new DeflateStream(writer.BaseStream, CompressionMode.Compress, true))
+                {
+                    using (var bw = new BinaryWriter(ds))
+                    {
+                        serialize(bw);
+                    }
+                }
             }
-            return array;
-        }
-
-        internal static float[] DeserializeSingleArray(BinaryReader reader, int count)
-        {
-            var array = new float[count];
-            for (int i = 0; i < count; i++)
+            else
             {
-                array[i] = reader.ReadSingle();
+                serialize(writer);
             }
-            return array;
-        }
-        internal static NetLiquidData[] DeserializeNetLiquidData(BinaryReader reader, int count)
-        {
-            var array = new NetLiquidData[count];
-            for (int i = 0; i < count; i++)
+
+            void serialize(BinaryWriter bw)
             {
-                array[i].PosX = reader.ReadUInt16();
-                array[i].PosY = reader.ReadUInt16();
-                array[i].Liquid = reader.ReadByte();
-                array[i].LiquidType = reader.ReadByte();
+                bw.Write(data.StartX);
+                bw.Write(data.StartY);
+                bw.Write(data.Width);
+                bw.Write(data.Height);
+
+                for (int i = 0; i < data.Tiles.Length; i++)
+                {
+                    serializeTile(bw, data.Tiles[i]);
+                }
+
+                for (int i = 0; i < data.ChestCount; i++)
+                {
+                    var chest = data.Chests[i];
+                    bw.Write(chest.ID);
+                    bw.Write(chest.TileX);
+                    bw.Write(chest.TileY);
+                    bw.Write(chest.Name);
+                }
+
+                for (int i = 0; i < data.SignCount; i++)
+                {
+                    var sign = data.Signs[i];
+                    bw.Write(sign.ID);
+                    bw.Write(sign.TileX);
+                    bw.Write(sign.TileY);
+                    bw.Write(sign.Text);
+                }
+
+                for (int i = 0; i < data.TileEntityCount; i++)
+                {
+                    TileEntity.Write(bw, data.TileEntities[i], false);
+                }
             }
-            return array;
-        }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static Vector2 DeserializeVector2(BinaryReader reader)
-            => new Vector2(reader.ReadSingle(), reader.ReadSingle());
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static Color DeserializeColor(BinaryReader reader)
-            => new Color((int)reader.ReadByte(), (int)reader.ReadByte(), (int)reader.ReadByte());
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static BitsByte DeserializeBitsByte(BinaryReader reader)
-            => reader.ReadByte();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static WiresUI.Settings.MultiToolMode DeserializeMultiToolMode(BinaryReader reader)
-            => (WiresUI.Settings.MultiToolMode)reader.ReadByte();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static NetworkText DeserializeNetworkText(BinaryReader reader)
-            => NetworkText.Deserialize(reader);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static PlayerDeathReason DeserializePlayerDeathReason(BinaryReader reader)
-            => PlayerDeathReason.FromReader(reader);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static PlayerSpawnContext DeserializePlayerSpawnContext(BinaryReader reader)
-            => (PlayerSpawnContext)reader.ReadByte();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static SkyEntityType DeserializeSkyEntityType(BinaryReader reader)
-            => (SkyEntityType)reader.ReadByte();
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static NetTeleportPylonModule.SubPacketType DeserializeSubPacketType(BinaryReader reader)
-            => (NetTeleportPylonModule.SubPacketType)reader.ReadByte();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static TeleportPylonType DeserializeTeleportPylonType(BinaryReader reader)
-            => (TeleportPylonType)reader.ReadByte();
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-
-        internal static NetBestiaryModule.BestiaryUnlockType DeserializeBestiaryUnlockType(BinaryReader reader)
-            => (NetBestiaryModule.BestiaryUnlockType)reader.ReadByte();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ParticleOrchestraType DeserializeParticleOrchestraType(BinaryReader reader)
-            => (ParticleOrchestraType)reader.ReadByte();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ParticleOrchestraSettings DeserializeParticleOrchestraSettings(BinaryReader reader)
-        {
-            var settings = new ParticleOrchestraSettings();
-            settings.DeserializeFrom(reader);
-            return settings;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ICreativePower DeserializeCreativePowers(BinaryReader reader, byte playerSlot)
-        {
-            ushort id = reader.ReadUInt16();
-            if (!CreativePowerManager.Instance.TryGetPower(id, out var creativePower))
+            void serializeTile(BinaryWriter bw, ComplexTileData tile)
             {
-                return null;
+                var flags1 = tile.Flags1;
+                var flags2 = tile.Flags2;
+                var flags3 = tile.Flags3;
+
+                bw.Write(flags1);
+                // if HasFlag2 flag is true
+                if (flags1[0])
+                {
+                    bw.Write(flags2);
+                    // if HasFlag3 flag is true
+                    if (flags2[0])
+                        bw.Write(flags3);
+                }
+
+                // if HasTile flag is true
+                if (flags1[1])
+                {
+                    // write a byte when this flag is false
+                    bw.Write(flags1[5] ? tile.TileType : (byte)tile.TileType);
+
+                    if (Main.tileFrameImportant[tile.TileType])
+                    {
+                        bw.Write(tile.FrameX);
+                        bw.Write(tile.FrameY);
+                    }
+
+                    // if HasTileColor flag is true
+                    if (flags3[3])
+                        bw.Write(tile.TileColor);
+                }
+
+                // if HasWall flag is true
+                if (flags1[2])
+                {
+                    bw.Write((byte)tile.WallType);
+                    // if HasWallColor flag is true
+                    if (flags3[4])
+                        bw.Write(tile.WallColor);
+                }
+
+                // if Liquid1 or Liquid2 flag is true
+                if (flags1[3] || flags1[4])
+                    bw.Write(tile.Liquid);
+
+                // write an additional byte if wall type is greater than byte's max
+                if (tile.WallType > 255)
+                {
+                    bw.Write((byte)(tile.WallType >> 8));
+                }
+
+                if (tile.Count > 1)
+                {
+                    flags1[6] = true;
+                    flags1[7] = tile.Count > byte.MaxValue;
+                    bw.Write(flags1[7] ? tile.Count : (byte)tile.Count);
+                }
             }
-            creativePower.DeserializeNetMessage(reader, playerSlot);
-            return creativePower;
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static TileEntity DeserializeTileEntity(BinaryReader reader)
-            => TileEntity.Read(reader, true);
-
     }
 }
