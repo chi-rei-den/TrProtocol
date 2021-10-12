@@ -21,7 +21,10 @@ namespace Delphinus
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static byte[] DeserializeBytes(BinaryReader reader, int count)
-            => reader.ReadBytes(count);
+        {
+            if (count < 0) return reader.ReadBytes((int) (reader.BaseStream.Length - reader.BaseStream.Position));
+            return reader.ReadBytes(count);
+        }
 
         internal static ushort[] DeserializeUInt16Array(BinaryReader reader, int count)
         {
@@ -304,7 +307,7 @@ namespace Delphinus
             settings.DeserializeFrom(reader);
             return settings;
         }
-
+        /*
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ICreativePower DeserializeCreativePowers(BinaryReader reader, byte playerSlot)
         {
@@ -315,7 +318,7 @@ namespace Delphinus
             }
             creativePower.DeserializeNetMessage(reader, playerSlot);
             return creativePower;
-        }
+        }*/
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static TileEntity DeserializeTileEntity(BinaryReader reader)

@@ -77,7 +77,7 @@ namespace Delphinus
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Serialize(BinaryWriter writer, ParticleOrchestraSettings data)
             => data.Serialize(writer);
-
+        /*
         internal static void Serialize(BinaryWriter writer, ICreativePower data, byte playerSlot)
         {
             switch (data)
@@ -111,7 +111,7 @@ namespace Delphinus
                 break;
             }
         }
-
+        */
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Serialize(BinaryWriter writer, TileEntity data)
             => TileEntity.Write(writer, data, true);

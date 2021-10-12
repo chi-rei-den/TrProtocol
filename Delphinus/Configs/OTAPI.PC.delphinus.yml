@@ -1,5 +1,5 @@
 ﻿---
-Namespace: Delphinus.OTAPI
+Namespace: Delphinus
 
 CustomSerializers:
   ushort[]: Serializers.Serialize(writer, value)

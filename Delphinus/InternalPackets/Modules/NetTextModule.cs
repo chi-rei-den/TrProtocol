@@ -5,17 +5,17 @@ namespace Delphinus.InternalPackets.Modules
     internal class NetTextModule : IPacket
     {
         // Client to Server
-        [Condition("!Main.dedServ", "Main.dedServ")]
+        [C2SOnly]
         public string Command { get; set; }
-        [Condition("!Main.dedServ", "Main.dedServ")]
+        [C2SOnly]
         public string Text { get; set; }
 
         // Server to Client
-        [Condition("Main.dedServ", "!Main.dedServ")]
+        [S2COnly]
         public byte PlayerSlot { get; set; }
-        [Condition("Main.dedServ", "!Main.dedServ")]
+        [S2COnly]
         public NetworkText NetworkText { get; set; }
-        [Condition("Main.dedServ", "!Main.dedServ")]
+        [S2COnly]
         public Color Color { get; set; }
     }
 }

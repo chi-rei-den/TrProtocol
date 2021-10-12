@@ -79,7 +79,7 @@ namespace Delphinus.Generator
                 templateCtx.SetVar("using_statements", config.UsingStatements);
                 templateCtx.SetVar("namespace", config.Namespace);
                 templateCtx.SetVar("type_kind", config.TypeKind);
-                templateCtx.SetVar("base_type", config.BaseType);
+                templateCtx.SetVar("base_type", isNetModule ? config.NetModuleBaseType : config.BaseType);
                 templateCtx.SetVar("reader_type", config.Reader);
                 templateCtx.SetVar("writer_type", config.Writer);
                 templateCtx.SetVar("packet", "this");
@@ -129,13 +129,14 @@ namespace Delphinus.Generator
 
                 bool isNetModule = config.NetModules.TryGetValue(typeName, out var netModuleID);
 
-                if (!isNetModule && !config.Packets.TryGetValue(typeName, out var packetID))
+                if (!config.Packets.TryGetValue(typeName, out var packetID) && !isNetModule)
                     continue;
 
                 var subCtx = new TemplateContext(templateCtx.BuiltinObject);
                 subCtx.SetVar("packet_type_name", packetType.Identifier.Text);
                 subCtx.SetVar("members", packetType.Members);
                 templateCtx.SetVar("net_module_id", netModuleID);
+                templateCtx.SetVar("packet_id", packetID);
 
                 var serializeStatements = new List<string>();
                 var deserializeStatements = new List<string>();
@@ -273,6 +274,8 @@ namespace Delphinus.Generator
             var condAttr = memberDecl.FindAttribute("Condition");
             var exprAttr = memberDecl.FindAttribute("Expression");
             var argsAttr = memberDecl.FindAttribute("Arguments");
+            var s2cAttr = memberDecl.FindAttribute("S2COnly");
+            var c2sAttr = memberDecl.FindAttribute("C2SOnly");
 
             if (manualAttr != null)
             {
@@ -286,6 +289,8 @@ namespace Delphinus.Generator
 
             var condition = GetCodeFromAttribute(condAttr, isSerialize, genContext);
             if (condition != null) condition = Template.Parse(condition).Render(context);
+            if ((isSerialize ? c2sAttr : s2cAttr) != null) condition = "fromClient";
+            if ((isSerialize ? s2cAttr : c2sAttr) != null) condition = "!fromClient";
 
             var expression = GetCodeFromAttribute(exprAttr, isSerialize, genContext);
             if (expression != null) expression = Template.Parse(expression).Render(context);

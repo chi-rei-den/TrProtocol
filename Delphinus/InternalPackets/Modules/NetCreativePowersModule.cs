@@ -4,6 +4,7 @@ namespace Delphinus.InternalPackets.Modules
 {
     internal class NetCreativePowersModule : IPacket
     {
-        public ICreativePower PowerType { get; set; }
+        [Arguments("-1")]
+        public byte[] PowerType { get; set; }
     }
 }

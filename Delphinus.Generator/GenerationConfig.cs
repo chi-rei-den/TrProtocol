@@ -19,7 +19,8 @@ namespace Delphinus.Generator
         public string Writer { get; set; } = nameof(BinaryWriter);
         public string Reader { get; set; } = nameof(BinaryReader);
         public string TypeKind { get; set; } = "class";
-        public string BaseType { get; set; }
+        public string BaseType { get; set; } = "Packet";
+        public string NetModuleBaseType { get; set; } = "NetModule";
 
     }
 }

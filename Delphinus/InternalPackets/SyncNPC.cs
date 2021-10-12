@@ -52,10 +52,7 @@ case 4:
     break;
 }")]
         public int Life { get; set; }
-
-        private const string varNPCType = "{{~ $t = 'Main.npc[' + packet + '.NPCSlot].type' ~}}";
-        private const string isCatchable = "{{$t}} >= 0 && {{$t}} < 668 && Main.npcCatchable[{{$t}}]";
-        [Condition(varNPCType + isCatchable)]
-        public byte ReleaseOwner { get; set; }
+        
+        [Arguments("-1")] public byte[] ReleaseOwner { get; set; }
     }
 }

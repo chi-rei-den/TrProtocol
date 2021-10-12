@@ -4,19 +4,20 @@
 
 namespace {{ namespace }}.Packets {
     public {{ type_kind }} {{ packet_type_name }}Packet {{- base_type ?! ' : ' + base_type }} {
-        public readonly byte MessageID = {{ packet_id }};
+        public override MessageID MessageID => (MessageID){{ packet_id }};
 
     {{~ for $member in members ~}}
         {{ $member | string.replace '\n' '\n    ' }}
     {{~ end ~}}
 
-        public void Deserialize({{ reader_type }} reader) {
+        public override void Deserialize({{ reader_type }} reader, bool fromClient) {
         {{~ for $stmt in deserialize_statements ~}}
             {{ $stmt | string.replace '\n' '\n            ' }}
         {{~ end ~}}
         }
 
-        public void Serialize({{ writer_type }} writer) {
+        public override void Serialize({{ writer_type }} writer, bool fromClient) {
+            writer.Write((byte){{ packet_id }});
         {{~ for $stmt in serialize_statements ~}}
             {{ $stmt | string.replace '\n' '\n            ' }}
         {{~ end ~}}

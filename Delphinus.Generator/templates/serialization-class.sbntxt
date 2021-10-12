@@ -3,9 +3,16 @@
 {{~ end ~}}
 
 namespace {{ namespace }} {
-    public static class Serialization {
-    {{~ for $mtd_tuple in method_tuples ~}}
-        {{ $mtd_tuple | string.replace '\n' '\n        ' }}
-    {{~ end ~}}
+    public partial class PacketSerializer {
+        static PacketSerializer()
+        {
+            Terraria.DataStructures.TileEntity.InitializeAll();
+            Terraria.Main.Initialize_TileAndNPCData1();
+            Terraria.Main.Initialize_TileAndNPCData2();
+
+            {{~ for $mtd_tuple in method_tuples ~}}
+                {{ $mtd_tuple | string.replace '\n' '\n        ' }}
+            {{~ end ~}}
+        }
     }
 }
