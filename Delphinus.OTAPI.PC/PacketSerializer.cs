@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Delphinus.Packets;
 
 namespace Delphinus
 {
@@ -47,13 +49,14 @@ namespace Delphinus
                 {
                     Console.WriteLine($"[Warning] {br.BaseStream.Length - br.BaseStream.Position} not used when deserializing {(client ? "S2C::" : "C2S::")}{result}");
                 }
-                Console.WriteLine($"{(client ? "S2C::" : "C2S::")}{result}");
+                Console.WriteLine($"{(client ? "S2C::" : "C2S::")}{result} ({((int)result.MessageID):X}) {l} bytes read");
                 return result;
             }
         }
 
         public byte[] Serialize(Packet p)
         {
+            //if (p is StartPlayingPacket) Debugger.Break();
             using (var ms = new MemoryStream())
             using (var bw = new BinaryWriter(ms))
             {
@@ -62,6 +65,7 @@ namespace Delphinus
                 var l = bw.BaseStream.Position;
                 bw.BaseStream.Position = 0;
                 bw.Write((short)l);
+                Console.WriteLine($"{(!client ? "S2C::" : "C2S::")}{p} ({((int)p.MessageID):X}) {l} bytes written");
                 return ms.ToArray();
             }
         }

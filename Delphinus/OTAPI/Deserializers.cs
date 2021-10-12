@@ -148,7 +148,7 @@ namespace Delphinus
                     totalCount -= tile.Count + 1;
                 }
                 data.Tiles = tiles.ToArray();
-
+                
                 data.ChestCount = br.ReadInt16();
                 if (data.ChestCount > 8000)
                     throw new Exception("Too many chests!");
@@ -161,7 +161,7 @@ namespace Delphinus
                     chest.TileY = br.ReadInt16();
                     chest.Name = br.ReadString();
                 }
-
+                
                 data.SignCount = br.ReadInt16();
                 if (data.SignCount > 1000)
                     throw new Exception("Too many signs!");
@@ -174,7 +174,7 @@ namespace Delphinus
                     sign.TileY = br.ReadInt16();
                     sign.Text = br.ReadString();
                 }
-
+                
                 data.TileEntityCount = br.ReadInt16();
                 if (data.TileEntityCount > 1000)
                     throw new Exception("Too many tile entities!");

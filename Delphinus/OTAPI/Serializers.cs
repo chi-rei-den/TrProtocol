@@ -219,11 +219,13 @@ namespace Delphinus
                 bw.Write(data.StartY);
                 bw.Write(data.Width);
                 bw.Write(data.Height);
-
+                
                 for (int i = 0; i < data.Tiles.Length; i++)
                 {
                     serializeTile(bw, data.Tiles[i]);
                 }
+                
+                bw.Write(data.ChestCount);
 
                 for (int i = 0; i < data.ChestCount; i++)
                 {
@@ -233,6 +235,8 @@ namespace Delphinus
                     bw.Write(chest.TileY);
                     bw.Write(chest.Name);
                 }
+                
+                bw.Write(data.SignCount);
 
                 for (int i = 0; i < data.SignCount; i++)
                 {
@@ -242,6 +246,8 @@ namespace Delphinus
                     bw.Write(sign.TileY);
                     bw.Write(sign.Text);
                 }
+                
+                bw.Write(data.TileEntityCount);
 
                 for (int i = 0; i < data.TileEntityCount; i++)
                 {
@@ -254,6 +260,9 @@ namespace Delphinus
                 var flags1 = tile.Flags1;
                 var flags2 = tile.Flags2;
                 var flags3 = tile.Flags3;
+                
+                //flags1[6] = tile.Count > 1;
+                //flags1[7] = tile.Count > byte.MaxValue;
 
                 bw.Write(flags1);
                 // if HasFlag2 flag is true
@@ -261,15 +270,18 @@ namespace Delphinus
                 {
                     bw.Write(flags2);
                     // if HasFlag3 flag is true
-                    if (flags2[0])
-                        bw.Write(flags3);
+                    if (flags2[0]) bw.Write(flags3);
                 }
 
                 // if HasTile flag is true
                 if (flags1[1])
                 {
                     // write a byte when this flag is false
-                    bw.Write(flags1[5] ? tile.TileType : (byte)tile.TileType);
+                    if (flags1[5])
+                        bw.Write(tile.TileType);
+                    else
+                        bw.Write((byte)tile.TileType);
+
 
                     if (Main.tileFrameImportant[tile.TileType])
                     {
@@ -296,16 +308,17 @@ namespace Delphinus
                     bw.Write(tile.Liquid);
 
                 // write an additional byte if wall type is greater than byte's max
-                if (tile.WallType > 255)
+                if (flags3[6])
                 {
                     bw.Write((byte)(tile.WallType >> 8));
                 }
 
-                if (tile.Count > 1)
+                if (flags1[6] || flags1[7])
                 {
-                    flags1[6] = true;
-                    flags1[7] = tile.Count > byte.MaxValue;
-                    bw.Write(flags1[7] ? tile.Count : (byte)tile.Count);
+                    if (flags1[7])
+                        bw.Write(tile.Count);
+                    else
+                        bw.Write((byte)tile.Count);
                 }
             }
         }

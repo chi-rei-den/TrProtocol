@@ -8,6 +8,7 @@ namespace Delphinus
         public int StartY { get; set; }
         public short Width { get; set; }
         public short Height { get; set; }
+
         public ComplexTileData[] Tiles;
         public short ChestCount { get; set; }
         public ChestData[] Chests { get; set; }
