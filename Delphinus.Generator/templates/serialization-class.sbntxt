@@ -6,6 +6,7 @@ namespace {{ namespace }} {
     public partial class PacketSerializer {
         static PacketSerializer()
         {
+            Terraria.Main.rand = new Terraria.Utilities.UnifiedRandom();
             Terraria.DataStructures.TileEntity.InitializeAll();
             Terraria.Main.Initialize_TileAndNPCData1();
             Terraria.Main.Initialize_TileAndNPCData2();

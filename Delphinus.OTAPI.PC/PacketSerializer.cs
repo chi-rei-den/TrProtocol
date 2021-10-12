@@ -47,6 +47,7 @@ namespace Delphinus
                 {
                     Console.WriteLine($"[Warning] {br.BaseStream.Length - br.BaseStream.Position} not used when deserializing {(client ? "S2C::" : "C2S::")}{result}");
                 }
+                Console.WriteLine($"{(client ? "S2C::" : "C2S::")}{result}");
                 return result;
             }
         }

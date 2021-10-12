@@ -72,6 +72,7 @@ namespace Delphinus.InternalPackets
         public BitsByte EventInfo5 { get; set; }
         public BitsByte EventInfo6 { get; set; }
         public BitsByte EventInfo7 { get; set; }
+        public BitsByte EventInfo8 { get; set; }
         public short CopperOreTier { get; set; }
         public short IronOreTier { get; set; }
         public short SilverOreTier { get; set; }
