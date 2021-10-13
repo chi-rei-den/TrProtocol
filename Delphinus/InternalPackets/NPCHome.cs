@@ -5,5 +5,6 @@
         public short NPCSlot { get; set; }
         public short PosX { get; set; }
         public short PosY { get; set; }
+        public byte Homeless { get; set; }
     }
 }

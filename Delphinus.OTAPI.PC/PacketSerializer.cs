@@ -49,7 +49,7 @@ namespace Delphinus
                 {
                     Console.WriteLine($"[Warning] {br.BaseStream.Length - br.BaseStream.Position} not used when deserializing {(client ? "S2C::" : "C2S::")}{result}");
                 }
-                Console.WriteLine($"{(client ? "S2C::" : "C2S::")}{result} ({((int)result.MessageID):X}) {l} bytes read");
+                //Console.WriteLine($"{(client ? "S2C::" : "C2S::")}{result} ({((int)result.MessageID):X}) {l} bytes read");
                 return result;
             }
         }
@@ -65,7 +65,7 @@ namespace Delphinus
                 var l = bw.BaseStream.Position;
                 bw.BaseStream.Position = 0;
                 bw.Write((short)l);
-                Console.WriteLine($"{(!client ? "S2C::" : "C2S::")}{p} ({((int)p.MessageID):X}) {l} bytes written");
+                //Console.WriteLine($"{(!client ? "S2C::" : "C2S::")}{p} ({((int)p.MessageID):X}) {l} bytes written");
                 return ms.ToArray();
             }
         }
