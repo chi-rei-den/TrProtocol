@@ -9,9 +9,9 @@ namespace Delphinus.InternalPackets
         public byte Hair { get; set; }
         public string Name { get; set; }
         public byte HairDye { get; set; }
-        public BitsByte Flags1 { get; set; }
-        public BitsByte Flags2 { get; set; }
-        public byte HideMisc { get; set; }
+        public BitsByte HideVisuals1 { get; set; }
+        public BitsByte HideVisuals2 { get; set; }
+        public BitsByte HideMisc { get; set; }
         public Color HairColor { get; set; }
         public Color SkinColor { get; set; }
         public Color EyeColor { get; set; }
@@ -19,7 +19,7 @@ namespace Delphinus.InternalPackets
         public Color UnderShirtColor { get; set; }
         public Color PantsColor { get; set; }
         public Color ShoeColor { get; set; }
-        public BitsByte Flags3 { get; set; }
-        public BitsByte Flags4 { get; set; }
+        public BitsByte Difficulty { get; set; }
+        public BitsByte Torch { get; set; }
     }
 }

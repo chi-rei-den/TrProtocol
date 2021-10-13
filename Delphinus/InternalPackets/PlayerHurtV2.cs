@@ -9,5 +9,6 @@ namespace Delphinus.InternalPackets
         public short Damage { get; set; }
         public byte HitDirection { get; set; }
         public BitsByte Bits1 { get; set; }
+        public sbyte CooldownCounter { get; set; }
     }
 }

@@ -255,7 +255,7 @@ namespace Delphinus
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static Color DeserializeColor(BinaryReader reader)
-            => new Color((int)reader.ReadByte(), (int)reader.ReadByte(), (int)reader.ReadByte());
+            => new Color(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static BitsByte DeserializeBitsByte(BinaryReader reader)

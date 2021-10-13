@@ -27,8 +27,12 @@ namespace Delphinus
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void Serialize(BinaryWriter writer, Color data)
-            => writer.Write(data.packedValue);
+        internal static void Serialize(BinaryWriter writer, Color data) 
+        {
+            writer.Write(data.R);
+            writer.Write(data.G);
+            writer.Write(data.B);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void Serialize(BinaryWriter writer, BitsByte data)

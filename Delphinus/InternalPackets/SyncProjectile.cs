@@ -14,7 +14,7 @@ namespace Delphinus.InternalPackets
 
         [Condition("{{packet}}.Flags[0]")] public float AI1 { get; set; }
         [Condition("{{packet}}.Flags[1]")] public float AI2 { get; set; }
-        [Condition("{{packet}}.Flags[2]")] public ushort BannerId { get; set; }
+        [Condition("{{packet}}.Flags[3]")] public ushort BannerId { get; set; }
         [Condition("{{packet}}.Flags[4]")] public short Damange { get; set; }
         [Condition("{{packet}}.Flags[5]")] public float Knockback { get; set; }
         [Condition("{{packet}}.Flags[6]")] public ushort OriginalDamage { get; set; }
