@@ -11,6 +11,7 @@ namespace TrProtocol.Packets
         public short Stack { get; set; }
         public byte Prefix { get; set; }
         public byte Owner { get; set; }
+        [BoundWith("MaxItemType")]
         public short ItemType { get; set; }
     }
 }

@@ -10,6 +10,32 @@ namespace TrProtocol
 {
     public partial class PacketSerializer
     {
+        private class LegacySerializer : IFieldSerializer
+        {
+            private Serializer serializer;
+            private Deserializer deserializer;
+            private Type type;
+
+            public LegacySerializer(Serializer serializer, Deserializer deserializer, Type type)
+            {
+                this.serializer = serializer;
+                this.deserializer = deserializer;
+                this.type = type;
+            }
+
+            public object Read(BinaryReader br)
+            {
+                var o = Activator.CreateInstance(type);
+                deserializer(o, br);
+                return o;
+            }
+
+            public void Write(BinaryWriter bw, object o)
+            {
+                serializer(o, bw);
+            }
+        }
+
         private delegate void Serializer(object o, BinaryWriter bw);
         private delegate void Deserializer(object o, BinaryReader br);
 
@@ -37,9 +63,8 @@ namespace TrProtocol
             RegisterPacket(typeof(T));
         }
 
-        private void RegisterPacket(Type type)
+        private (Serializer, Deserializer) GenerateSerializers(Type type)
         {
-            if (type.IsAbstract || !type.IsSubclassOf(typeof(Packet))) return;
             Serializer serializer = null;
             Deserializer deserializer = null;
 
@@ -55,7 +80,7 @@ namespace TrProtocol
                 if (prop.IsDefined(typeof(IgnoreAttribute))) continue;
                 if (flag == BindingFlags.NonPublic && !prop.IsDefined(typeof(ForceSerializeAttribute))) continue;
 
-                var ver = prop.GetCustomAttribute<ProtocolVwrsionAttribute>();
+                var ver = prop.GetCustomAttribute<ProtocolVersionAttribute>();
                 if (ver != null && ver.version != this.version) continue;
 
                 var get = prop.GetMethod;
@@ -97,22 +122,50 @@ namespace TrProtocol
                 {
                     var genrericType = enumSerializers[t.GetFields()[0].FieldType];
                     var seriliazer = genrericType.MakeGenericType(t);
-                    ser = (IFieldSerializer) Activator.CreateInstance(seriliazer);
+                    ser = (IFieldSerializer)Activator.CreateInstance(seriliazer);
+                }
+                else if (t.IsDefined(typeof(LegacySerializerAttribute)))
+                {
+                    var (s, ds) = GenerateSerializers(type);
+                    ser = new LegacySerializer(s, ds, t);
                 }
                 else if (!fieldSerializers.TryGetValue(t, out ser))
                     throw new Exception("No valid serializer for type: " + t.FullName);
-                
+
                 serFound:
 
-                if (ser is IConfigurable conf) ser = conf.Configure(prop, version);
-                
+                if (ser is IConfigurable conf) ser = conf.Configure(prop, version, name => (o => dict[name].GetValue(o)));
+                var cfg = (IInstanceConfigurable) ser;
+
                 if (shouldSerialize)
-                    serializer += (o, bw) => { if (condition(o)) ser.Write(bw, get.Invoke(o, empty)); };
+                    serializer += (o, bw) =>
+                    {
+                        if (condition(o))
+                        {
+                            cfg?.Configure(prop, version, o);
+                            ser.Write(bw, get.Invoke(o, empty));
+                        }
+                    };
                 if (shouldDeserialize)
-                    deserializer += (o, br) => { if (condition(o)) set.Invoke(o, new[] { ser.Read(br) }); };
+                    deserializer += (o, br) =>
+                    {
+                        if (condition(o))
+                        {
+                            cfg?.Configure(prop, version, o);
+                            set.Invoke(o, new[] { ser.Read(br) });
+                        }
+                    };
             }
 
+            return (serializer, deserializer);
+        }
+
+        private void RegisterPacket(Type type)
+        {
+            if (type.IsAbstract || !type.IsSubclassOf(typeof(Packet))) return;
+            
             var inst = Activator.CreateInstance(type);
+            var (serializer, deserializer) = GenerateSerializers(type);
 
             if (client ? (type.GetCustomAttribute<S2COnlyAttribute>() == null) : (type.GetCustomAttribute<C2SOnlyAttribute>()) == null)
                 serializers[type] = (bw, o) => serializer?.Invoke(o, bw);

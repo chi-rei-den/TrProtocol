@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace TrProtocol
 {
@@ -11,6 +12,17 @@ namespace TrProtocol
     }
 
     [AttributeUsage(AttributeTargets.Property)]
+    public sealed class BoundWithAttribute : Attribute
+    {
+        public PropertyInfo property;
+
+        public BoundWithAttribute(string property)
+        {
+            this.property = typeof(Constants).GetProperty(property);
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public sealed class BoundAttribute : Attribute
     {
         public int upper, lower;
@@ -32,12 +44,12 @@ namespace TrProtocol
 
     }
 
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class ProtocolVwrsionAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
+    public sealed class ProtocolVersionAttribute : Attribute
     {
         public string version;
 
-        public ProtocolVwrsionAttribute(string version)
+        public ProtocolVersionAttribute(string version)
         {
             this.version = version;
         }
@@ -54,14 +66,13 @@ namespace TrProtocol
     {
 
     }
-
-
+    
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class ArraySizeAttribute : Attribute
     {
-        public int size;
+        public object[] size;
 
-        public ArraySizeAttribute(int size)
+        public ArraySizeAttribute(params object[] size)
         {
             this.size = size;
         }
@@ -85,4 +96,9 @@ namespace TrProtocol
     public sealed class IgnoreAttribute : Attribute
     {
     }
+    [AttributeUsage(AttributeTargets.Class)]
+    public sealed class LegacySerializerAttribute : Attribute
+    {
+    }
+    
 }

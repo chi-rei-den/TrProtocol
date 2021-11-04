@@ -11,8 +11,13 @@ namespace TrProtocol
         void Write(BinaryWriter bw, object o);
     }
 
+    public interface IInstanceConfigurable
+    {
+        void Configure(PropertyInfo prop, string version, object @base);
+    }
+
     public interface IConfigurable
     {
-        IFieldSerializer Configure(PropertyInfo prop, string version);
+        IFieldSerializer Configure(PropertyInfo prop, string version, Func<string, Func<object, object>> valGetter);
     }
 }

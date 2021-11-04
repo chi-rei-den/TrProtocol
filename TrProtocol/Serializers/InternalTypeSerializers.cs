@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace TrProtocol
@@ -22,10 +23,7 @@ namespace TrProtocol
             RegisterSerializer(new FloatSerializer());
             RegisterSerializer(new StringSerializer());
 
-            RegisterSerializer(new ArraySerializer<short>());
-            RegisterSerializer(new ArraySerializer<ushort>());
-            RegisterSerializer(new ArraySerializer<int>());
-            RegisterSerializer(new ArraySerializer<uint>());
+            RegisterSerializer(new ArraySerializer());
             RegisterSerializer(new ByteArraySerializer());
         }
 
@@ -112,38 +110,68 @@ namespace TrProtocol
             }
         }
 
-        private class ArraySerializer<T> : FieldSerializer<T[]>, IConfigurable
+        private class ArraySerializer : FieldSerializer<Array>, IConfigurable, IInstanceConfigurable
         {
-            private readonly int size;
+            private readonly Func<object, int>[] sizeGetter;
+            private readonly int[] size;
             private readonly IFieldSerializer @base;
-            public ArraySerializer() : this(0)
+            private readonly Type type;
+
+            public ArraySerializer()
             {
 
             }
 
-            private ArraySerializer(int size)
+            private ArraySerializer(Type type, params Func<object, int>[] sizeGetter)
             {
-                this.size = size;
-                this.@base = fieldSerializers[typeof(T)];
+                this.sizeGetter = sizeGetter;
+                this.size = new int[sizeGetter.Length];
+                @base = fieldSerializers[type];
+                this.type = type;
             }
 
-            protected override T[] _Read(BinaryReader br)
+            protected override Array _Read(BinaryReader br)
             {
-                var t = new T[size];
-                for (var i = 0; i < size; ++i) t[i] = (T)@base.Read(br);
+                var t = Array.CreateInstance(type, size);
+                var n = size.Length;
+                var s = t.Length;
+                var i = new int[n];
+                while (--s >= 0)
+                {
+                    t.SetValue(@base.Read(br), i);
+                    var k = n - 1;
+                    ++i[k];
+                    while (i[k] == t.GetLength(k))
+                    {
+                        i[k] = 0;
+                        ++i[--k];
+                    }
+                }
                 return t;
             }
 
-            protected override void _Write(BinaryWriter bw, T[] t)
+            protected override void _Write(BinaryWriter bw, Array t)
             {
                 foreach (var x in t)
                     @base.Write(bw, x);
             }
 
-            public IFieldSerializer Configure(PropertyInfo prop, string version)
+            public IFieldSerializer Configure(PropertyInfo prop, string version, Func<string, Func<object, object>> valGetter)
             {
-                if (@base is IConfigurable conf) conf.Configure(prop, version);
-                return new ArraySerializer<T>(prop.GetCustomAttribute<ArraySizeAttribute>().size);
+                if (@base is IConfigurable conf) conf.Configure(prop, version, valGetter);
+                return new ArraySerializer(prop.PropertyType, prop.GetCustomAttribute<ArraySizeAttribute>().size
+                    .Select<object, Func<object, int>>(o => o switch
+                {
+                    string s => (o => ((int)Convert.ChangeType(valGetter(s)(o), typeof(int)))),
+                    int i  => (_ => i),
+                    _ => (_ => 1)
+                }).ToArray());
+            }
+
+            public void Configure(PropertyInfo prop, string version, object @base)
+            {
+                for (int i = 0; i < sizeGetter.Length; ++i)
+                    size[i] = sizeGetter[i](@base);
             }
         }
     }
