@@ -23,7 +23,6 @@ namespace TrProtocol
             RegisterSerializer(new FloatSerializer());
             RegisterSerializer(new StringSerializer());
 
-            RegisterSerializer(new ArraySerializer());
             RegisterSerializer(new ByteArraySerializer());
         }
 
@@ -159,7 +158,8 @@ namespace TrProtocol
             public IFieldSerializer Configure(PropertyInfo prop, string version, Func<string, Func<object, object>> valGetter)
             {
                 if (@base is IConfigurable conf) conf.Configure(prop, version, valGetter);
-                return new ArraySerializer(prop.PropertyType, prop.GetCustomAttribute<ArraySizeAttribute>().size
+                var type = prop.PropertyType.GetInterface("IEnumerable`1").GenericTypeArguments[0];
+                return new ArraySerializer(type, prop.GetCustomAttribute<ArraySizeAttribute>().size
                     .Select<object, Func<object, int>>(o => o switch
                 {
                     string s => (o => ((int)Convert.ChangeType(valGetter(s)(o), typeof(int)))),

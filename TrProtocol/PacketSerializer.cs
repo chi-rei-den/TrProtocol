@@ -50,6 +50,7 @@ namespace TrProtocol
             [typeof(byte)] = typeof(ByteEnumSerializer<>)
         };
 
+        private readonly ArraySerializer arraySerializer = new();
         private void LoadPackets(Assembly asm)
         {
             foreach (var type in asm.GetTypes())
@@ -130,12 +131,17 @@ namespace TrProtocol
                     ser = new LegacySerializer(s, ds, t);
                 }
                 else if (!fieldSerializers.TryGetValue(t, out ser))
-                    throw new Exception("No valid serializer for type: " + t.FullName);
+                {
+                    if (t.IsAssignableTo(typeof(Array)))
+                        ser = arraySerializer;
+                    else
+                        throw new Exception("No valid serializer for type: " + t.FullName);
+                }
 
                 serFound:
 
                 if (ser is IConfigurable conf) ser = conf.Configure(prop, version, name => (o => dict[name].GetValue(o)));
-                var cfg = (IInstanceConfigurable) ser;
+                var cfg = ser as IInstanceConfigurable;
 
                 if (shouldSerialize)
                     serializer += (o, bw) =>

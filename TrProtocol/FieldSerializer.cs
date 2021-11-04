@@ -28,8 +28,7 @@ namespace TrProtocol
         public IFieldSerializer Configure(PropertyInfo prop, string version, Func<string, Func<object, object>> valGetter)
         {
             var instance = (NumFieldSerializer<T>) MemberwiseClone();
-            prop = prop.GetCustomAttribute<BoundWithAttribute>()?.property ?? prop;
-            foreach (var bound in prop.GetCustomAttributes<BoundAttribute>())
+            foreach (var bound in (prop.GetCustomAttribute<BoundWithAttribute>()?.property ?? prop).GetCustomAttributes<BoundAttribute>())
             {
                 if (bound.version != version) continue; ;
                 instance.zero = (T)Convert.ChangeType(0, prop.PropertyType);
