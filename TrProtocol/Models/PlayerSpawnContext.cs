@@ -1,8 +1,6 @@
-﻿using TrProtocol.Serializers;
-
-namespace TrProtocol.Models
+﻿namespace TrProtocol.Models
 {
-    
+
     // Token: 0x0200005C RID: 92
     public enum PlayerSpawnContext : byte
     {
