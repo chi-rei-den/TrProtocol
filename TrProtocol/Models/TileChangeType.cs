@@ -1,8 +1,6 @@
-﻿using TrProtocol.Serializers;
-
-namespace TrProtocol.Models
+﻿namespace TrProtocol.Models
 {
-    
+
     public enum TileChangeType : byte
     {
         None,

@@ -1,8 +1,6 @@
-﻿using TrProtocol.Serializers;
-
-namespace TrProtocol.Models
+﻿namespace TrProtocol.Models
 {
-    
+
     public enum SkyEntityType : byte
     {
         // Token: 0x0400573B RID: 22331

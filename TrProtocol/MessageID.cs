@@ -1,5 +1,4 @@
 ﻿using System;
-using TrProtocol.Serializers;
 
 namespace TrProtocol
 {
@@ -432,8 +431,10 @@ namespace TrProtocol
 
         // Token: 0x04003A8D RID: 14989
         SetMiscEventValues = 140,
+        RequestLucyPopup = 141,
+        SyncProjectileTrackers = 142,
 
         // Token: 0x04003A8E RID: 14990
-        Count = 141
+        Count = 143
     }
 }

@@ -4,7 +4,7 @@
     {
         public Position(int x, int y)
         {
-            X = x; 
+            X = x;
             Y = y;
         }
         public int X, Y;

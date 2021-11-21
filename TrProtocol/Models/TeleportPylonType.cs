@@ -1,8 +1,6 @@
-﻿using TrProtocol.Serializers;
-
-namespace TrProtocol.Models
+﻿namespace TrProtocol.Models
 {
-    
+
     public enum TeleportPylonType : byte
     {
         // Token: 0x0400495B RID: 18779

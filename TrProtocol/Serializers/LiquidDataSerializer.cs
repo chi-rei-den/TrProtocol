@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Channels;
+﻿using System.IO;
 
 namespace TrProtocol.Models
 {
@@ -31,7 +28,7 @@ namespace TrProtocol.Models
             }
 
             protected override void _Write(BinaryWriter bw, LiquidData t)
-{
+            {
                 bw.Write(t.TotalChanges);
                 foreach (LiquidChange change in t.LiquidChanges)
                 {
