@@ -13,8 +13,4 @@
     <None Remove="Serializers\TileEntitiesSerializer\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Serializers\TileEntitySerializer.cs" />
-  </ItemGroup>
-
 </Project>

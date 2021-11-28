@@ -19,6 +19,7 @@ namespace TrProtocol.Packets
         public float AI3 { get; set; }
         [Condition("Bit1", 5)]
         public float AI4 { get; set; }
+        [BoundWith("MaxNPCID ")]
         public short NPCType { get; set; }
         [Condition("Bit2", 0)]
         public byte PlayerCount { get; set; }

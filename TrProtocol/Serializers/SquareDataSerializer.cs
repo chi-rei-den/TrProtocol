@@ -2,8 +2,10 @@
 
 namespace TrProtocol.Models
 {
-    [Serializer(typeof(SquareDataSerializer1405), "Terraria230")]
     [Serializer(typeof(SquareDataSerializer1405), "TerrariaXD230")]
+    [Serializer(typeof(SquareDataSerializer1405), "Terraria230")]
+    [Serializer(typeof(SquareDataSerializer1405), "Terraria233")]
+    [Serializer(typeof(SquareDataSerializer1405), "Terraria234")]
     [Serializer(typeof(SquareDataSerializer))]
     public partial class SquareData
     {
