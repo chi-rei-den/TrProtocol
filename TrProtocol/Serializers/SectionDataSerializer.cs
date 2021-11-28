@@ -13,7 +13,7 @@ namespace TrProtocol.Models
             protected override SectionData _Read(BinaryReader reader)
             {
                 reader.BaseStream.Position = 1L;
-                var compressed = reader.ReadByte() != 0;
+                var compressed = reader.ReadBoolean();
                 if (compressed)
                 {
                     using (var ds = new DeflateStream(reader.BaseStream, CompressionMode.Decompress, true))
