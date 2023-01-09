@@ -2,6 +2,9 @@
 using System.Net;
 using System.Threading;
 using TrClient;
+using TrProtocol.Models;
+using TrProtocol.Packets;
+using TrProtocol.Packets.Modules;
 
 namespace TrClientTest
 {
@@ -9,7 +12,7 @@ namespace TrClientTest
     {
         static void Main(string[] args)
         {
-            var client = new TClient();
+            /*
             Console.Write("ip>");
             var ip = Console.ReadLine();
             Console.Write("port>");
@@ -19,19 +22,77 @@ namespace TrClientTest
             Console.Write("curRelaese>");
             client.CurRelease = Console.ReadLine();
             Console.Write("username>");
-            client.Username = Console.ReadLine();
-
-            client.OnChat += (o, t, c) => Console.WriteLine(t);
-
-            new Thread(() =>
-            {
-                while (true)
+            client.Username = Console.ReadLine();*/
+            for (int i = 0; i < 50; ++i)
+                new Thread(() =>
                 {
-                    client.ChatText(Console.ReadLine());
-                }
-            }).Start();
+                    re:
+                    try
+                    {
+                        var client = new TClient();
+                        var ip = "169.254.14.118";
+                        var port = 7777;
 
-            client.GameLoop(new IPEndPoint(IPAddress.Parse(ip), port), password);
+                        //ip = "43.248.189.178"; port = 23360;
+
+                        //ip = "127.0.0.1";
+
+                        ip = "219.150.218.20";
+                        port = 46319;
+                        client.CurRelease = "Terraria248";
+                        client.Username = "rabbit";
+                        var password = "123456";
+
+                        client.OnChat += (o, t, c) => Console.WriteLine(t);
+                        client.OnMessage += (o, t) => Console.WriteLine(t);
+
+                        ShortPosition spawn = default;
+
+                        client.PostSendPlayer += _ =>
+                        {
+                            Console.WriteLine($"slot {client.PlayerSlot} connected");
+                            for (;;)
+                            {
+                                Console.WriteLine($"slot {client.PlayerSlot} is sending equipment");
+                                client.Send(new SyncEquipment {PlayerSlot = client.PlayerSlot});
+                                Thread.Sleep(1000);
+                            }
+                        };
+
+                        client.On<WorldData>(world => spawn = new ShortPosition(world.SpawnX, world.SpawnY));
+
+                        var done = false;
+
+                        client.On<StartPlaying>(_ =>
+                        {
+                            try
+                            {
+                                client.Send(new NetTextModuleC2S {Command = "Say", Text = $"/register {password}"});
+                                client.Send(new NetTextModuleC2S {Command = "Say", Text = $"/login {password}"});
+
+                                byte[] b = new byte[300];
+                                var rnd = new Random();
+                                for (;;)
+                                {
+                                    rnd.NextBytes(b);
+                                    client.Send(new NetTextModuleC2S
+                                        {Command = "Say", Text = $"a{Convert.ToBase64String(b)}"});
+                                }
+                            }
+                            catch
+                            {
+                                client.connected = false;
+                            }
+                        });
+
+                        client.GameLoop(new IPEndPoint(IPAddress.Parse(ip), port), password);
+                        goto re;
+                    }
+                    catch
+                    {
+                        goto re;
+                    }
+                }).Start();
         }
     }
 }

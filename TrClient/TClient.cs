@@ -23,7 +23,7 @@ namespace TrClient
 
         private BinaryReader br;
         private BinaryWriter bw;
-        private PacketSerializer mgr = new PacketSerializer(true);
+        private static readonly PacketSerializer mgr = new PacketSerializer(true);
 
         public void Connect(string hostname, int port)
         {
@@ -81,6 +81,7 @@ namespace TrClient
         }
         public void Send(Packet packet)
         {
+            //Console.WriteLine("send: " + packet);
             if (packet is IPlayerSlot ips) ips.PlayerSlot = PlayerSlot;
             bw.Write(mgr.Serialize(packet));
         }
@@ -125,6 +126,8 @@ namespace TrClient
         
         public event Action<TClient, NetworkText, Color> OnChat;
         public event Action<TClient, string> OnMessage;
+        public event Action<LoadPlayer> PostSendPlayer;
+
         public Func<bool> shouldExit = () => false;
 
         private Dictionary<Type, Action<Packet>> handlers = new();
@@ -133,7 +136,8 @@ namespace TrClient
         {
             void Handler(Packet p) => handler(p as T);
 
-            if (handlers.TryGetValue(typeof(T), out var val)) val += Handler;
+            if (handlers.TryGetValue(typeof(T), out var val))
+                handlers[typeof(T)] += Handler;
             else handlers.Add(typeof(T), Handler);
         }
 
@@ -156,7 +160,8 @@ namespace TrClient
             On<LoadPlayer>(player =>
             {
                 PlayerSlot = player.PlayerSlot;
-                SendPlayer();
+                //SendPlayer();
+                PostSendPlayer?.Invoke(player);
                 Send(new RequestWorldInfo());
             });
             On<WorldData>(_ =>
@@ -170,7 +175,10 @@ namespace TrClient
             On<StartPlaying>(_ =>
             {
                 Spawn(100, 100);
-
+                Send(new ItemOwner()
+                {
+                    ItemSlot = 400, OtherPlayerSlot = 255
+                });
             });
         }
 
@@ -189,7 +197,7 @@ namespace TrClient
         private void GameLoopInternal(string password)
         {
 
-            Console.WriteLine("Sending Client Hello...");
+            //Console.WriteLine("Sending Client Hello...");
             Hello(CurRelease);
 
             /*TcpClient verify = new TcpClient();
@@ -203,9 +211,12 @@ namespace TrClient
             connected = true;
             while (connected && !shouldExit())
             {
-                Packet packet = Receive();
+                Packet packet = null;
+                packet = Receive();
                 try
                 {
+                    if (packet == null) continue;
+                    //Console.WriteLine("recv: " + packet);
                     if (handlers.TryGetValue(packet.GetType(), out var act))
                         act(packet);
                     else
@@ -213,11 +224,11 @@ namespace TrClient
                 }
                 catch (Exception e)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    var msg = $"Exception caught when trying to parse packet {packet.Type}\n{e}";
-                    Console.WriteLine(msg);
-                    File.AppendAllText("log.txt", msg + "\n");
-                    Console.ResetColor();
+                    //Console.ForegroundColor = ConsoleColor.Red;
+                    //var msg = $"Exception caught when trying to parse packet {packet?.Type}\n{e}";
+                    //Console.WriteLine(msg);
+                    //File.AppendAllText("log.txt", msg + "\n");
+                    //Console.ResetColor();
                 }
             }
 
