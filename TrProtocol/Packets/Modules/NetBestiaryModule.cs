@@ -6,9 +6,11 @@ namespace TrProtocol.Packets.Modules
     {
         public override MessageID Type => MessageID.NetModules;
         public override NetModuleType ModuleType => NetModuleType.NetBestiaryModule;
-        public byte UnlockType { get; set; }
+        public BestiaryUnlockType UnlockType { get; set; }
         [BoundWith("MaxNPCID")]
         public short NPCNetID { get; set; }
-        public byte[] Extra { get; set; }
+        private bool _killCount => UnlockType == BestiaryUnlockType.Kill;
+        [Condition("_killCount")]
+        public ushort KillCount { get; set; }
     }
 }

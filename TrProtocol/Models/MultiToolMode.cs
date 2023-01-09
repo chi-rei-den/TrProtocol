@@ -1,8 +1,6 @@
-﻿using TrProtocol.Serializers;
-
-namespace TrProtocol.Models
+﻿namespace TrProtocol.Models
 {
-    
+
     public enum MultiToolMode : byte
     {
         // Token: 0x04004C68 RID: 19560

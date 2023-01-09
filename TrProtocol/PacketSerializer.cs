@@ -138,7 +138,7 @@ namespace TrProtocol
                         throw new Exception("No valid serializer for type: " + t.FullName);
                 }
 
-                serFound:
+            serFound:
 
                 if (ser is IConfigurable conf) ser = conf.Configure(prop, version, name => (o => dict[name].GetValue(o)));
                 var cfg = ser as IInstanceConfigurable;
@@ -169,7 +169,7 @@ namespace TrProtocol
         private void RegisterPacket(Type type)
         {
             if (type.IsAbstract || !type.IsSubclassOf(typeof(Packet))) return;
-            
+
             var inst = Activator.CreateInstance(type);
             var (serializer, deserializer) = GenerateSerializers(type);
 
@@ -203,7 +203,7 @@ namespace TrProtocol
         private readonly string version;
 
 
-        public PacketSerializer(bool client, string version="Terraria238")
+        public PacketSerializer(bool client, string version = "Terraria242")
         {
             this.client = client;
             this.version = version;

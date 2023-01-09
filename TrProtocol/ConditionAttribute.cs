@@ -66,7 +66,7 @@ namespace TrProtocol
     {
 
     }
-    
+
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class ArraySizeAttribute : Attribute
     {
@@ -100,5 +100,5 @@ namespace TrProtocol
     public sealed class LegacySerializerAttribute : Attribute
     {
     }
-    
+
 }

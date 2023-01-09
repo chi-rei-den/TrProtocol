@@ -163,7 +163,7 @@ namespace TrProtocol
                     .Select<object, Func<object, int>>(o => o switch
                 {
                     string s => (o => ((int)Convert.ChangeType(valGetter(s)(o), typeof(int)))),
-                    int i  => (_ => i),
+                    int i => (_ => i),
                     _ => (_ => 1)
                 }).ToArray());
             }
